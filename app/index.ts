@@ -1,2 +1,10 @@
-/** Public API of reactkit/app: non-visual functionality. */
+/** Public API of reactkit/app: non-visual functionality (never imports ui/). */
 export { readCookie } from "./cookies";
+export { ApiError, createApiClient } from "./http";
+export type { ApiClient, ApiClientOptions, HttpMethod, UnauthorizedListener } from "./http";
+export { createTranslator, formatText, TextsProvider, useTexts } from "./texts";
+export type { TextLeaf, TextParams, TextsProviderProps, TextTree, Translate } from "./texts";
+export { SessionProvider, useSession } from "./session";
+export type { Session, SessionProviderProps } from "./session";
+export { RequireAuth, returnPath } from "./RequireAuth";
+export type { FromState, RequireAuthProps } from "./RequireAuth";

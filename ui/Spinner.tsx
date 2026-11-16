@@ -14,9 +14,5 @@ export interface SpinnerProps {
  * @returns a span with role="status" and the given accessible label.
  */
 export function Spinner({ label }: SpinnerProps) {
-  return (
-    <span role="status" aria-label={label} className="rk-spinner">
-      ⏳
-    </span>
-  );
+  return <span role="status" aria-label={label} className="rk-spinner" />;
 }
