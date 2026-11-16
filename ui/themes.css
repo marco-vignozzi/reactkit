@@ -1,0 +1,125 @@
+/*
+ * Themes of reactkit: three styles x light / dark, as design tokens
+ * (CSS variables) read by every reactkit component and by the application.
+ *
+ * Apply them on an element (usually <html>, see app/theme.ts applyTheme):
+ *   data-theme-style = "paper" | "slate" | "graphite"
+ *   data-theme-mode  = "auto" | "light" | "dark"   ("auto" follows
+ *                      prefers-color-scheme)
+ * Without attributes nothing applies: set both (index.html does it before
+ * the first paint).
+ *
+ * Tokens: --color-bg, --color-surface, --color-surface-2, --color-text,
+ * --color-muted, --color-border, --color-primary, --color-primary-hover,
+ * --color-on-primary, --color-danger, --color-danger-bg, --color-success,
+ * --color-success-bg, --color-warning, --color-warning-bg, --color-info-bg,
+ * --radius, --shadow, --font-heading, --heading-weight, --label-transform,
+ * --label-spacing; plus the common --space.
+ */
+
+[data-theme-style] { --space: 1rem; color-scheme: light; }
+[data-theme-mode="dark"] { color-scheme: dark; }
+@media (prefers-color-scheme: dark) { [data-theme-mode="auto"] { color-scheme: dark; } }
+
+
+/* ---- Paper — warm paper neutrals, deep green, serif titles ---- */
+[data-theme-style="paper"] {
+  --color-bg: #f7f5f1; --color-surface: #fffdf9; --color-surface-2: #f0ece4;
+  --color-text: #2a2621; --color-muted: #6f675c; --color-border: #e3ddd2;
+  --color-primary: #2f5d50; --color-primary-hover: #244a40; --color-on-primary: #fffdf9;
+  --color-danger: #9c3d2e; --color-danger-bg: #f6e9e4;
+  --color-success: #3c6b3f; --color-success-bg: #e9f1e4;
+  --color-warning: #8c5f12; --color-warning-bg: #f5ecda;
+  --color-info-bg: #ece9e1;
+  --radius: 6px; --shadow: 0 1px 0 rgb(60 45 20 / 0.06);
+  --font-heading: ui-serif, Georgia, "Times New Roman", serif; --heading-weight: 600;
+  --label-transform: none; --label-spacing: 0;
+}
+[data-theme-style="paper"][data-theme-mode="dark"] {
+  --color-bg: #191714; --color-surface: #211e1a; --color-surface-2: #2a2621;
+  --color-text: #ece6dc; --color-muted: #a89f92; --color-border: #3a352e;
+  --color-primary: #8cc2ae; --color-primary-hover: #a3d0bf; --color-on-primary: #14201b;
+  --color-danger: #e5a08f; --color-danger-bg: #3b2520;
+  --color-success: #a3cc9e; --color-success-bg: #24301f;
+  --color-warning: #e0bd7d; --color-warning-bg: #3a2f1a;
+  --color-info-bg: #2a2722; --shadow: none;
+}
+@media (prefers-color-scheme: dark) {
+  [data-theme-style="paper"][data-theme-mode="auto"] {
+  --color-bg: #191714; --color-surface: #211e1a; --color-surface-2: #2a2621;
+  --color-text: #ece6dc; --color-muted: #a89f92; --color-border: #3a352e;
+  --color-primary: #8cc2ae; --color-primary-hover: #a3d0bf; --color-on-primary: #14201b;
+  --color-danger: #e5a08f; --color-danger-bg: #3b2520;
+  --color-success: #a3cc9e; --color-success-bg: #24301f;
+  --color-warning: #e0bd7d; --color-warning-bg: #3a2f1a;
+  --color-info-bg: #2a2722; --shadow: none;
+  }
+}
+
+
+/* ---- Slate — cool neutrals, muted blue accent, soft corners ---- */
+[data-theme-style="slate"] {
+  --color-bg: #f5f7fa; --color-surface: #ffffff; --color-surface-2: #eef1f5;
+  --color-text: #1e2733; --color-muted: #5f6b7a; --color-border: #dde2e9;
+  --color-primary: #3b5b85; --color-primary-hover: #2f4a6e; --color-on-primary: #ffffff;
+  --color-danger: #a83a3a; --color-danger-bg: #f8eaea;
+  --color-success: #2f6f55; --color-success-bg: #e6f2ec;
+  --color-warning: #8a6116; --color-warning-bg: #f6efdf;
+  --color-info-bg: #eaf0f7;
+  --radius: 8px; --shadow: 0 1px 2px rgb(16 24 40 / 0.06), 0 1px 3px rgb(16 24 40 / 0.04);
+  --font-heading: inherit; --heading-weight: 650; --label-transform: none; --label-spacing: 0;
+}
+[data-theme-style="slate"][data-theme-mode="dark"] {
+  --color-bg: #12161c; --color-surface: #1a1f27; --color-surface-2: #222833;
+  --color-text: #e4e8ee; --color-muted: #96a1b0; --color-border: #2d3440;
+  --color-primary: #8eabd6; --color-primary-hover: #a6bde0; --color-on-primary: #10161f;
+  --color-danger: #e79a9a; --color-danger-bg: #3a2122;
+  --color-success: #8fcfb2; --color-success-bg: #1d332a;
+  --color-warning: #e2c07e; --color-warning-bg: #3a301b;
+  --color-info-bg: #1f2a38; --shadow: none;
+}
+@media (prefers-color-scheme: dark) {
+  [data-theme-style="slate"][data-theme-mode="auto"] {
+  --color-bg: #12161c; --color-surface: #1a1f27; --color-surface-2: #222833;
+  --color-text: #e4e8ee; --color-muted: #96a1b0; --color-border: #2d3440;
+  --color-primary: #8eabd6; --color-primary-hover: #a6bde0; --color-on-primary: #10161f;
+  --color-danger: #e79a9a; --color-danger-bg: #3a2122;
+  --color-success: #8fcfb2; --color-success-bg: #1d332a;
+  --color-warning: #e2c07e; --color-warning-bg: #3a301b;
+  --color-info-bg: #1f2a38; --shadow: none;
+  }
+}
+
+
+/* ---- Graphite — monochrome, near-black accent, sharp corners ---- */
+[data-theme-style="graphite"] {
+  --color-bg: #fafafa; --color-surface: #ffffff; --color-surface-2: #f2f2f2;
+  --color-text: #141414; --color-muted: #6b6b6b; --color-border: #e4e4e4;
+  --color-primary: #1a1a1a; --color-primary-hover: #000000; --color-on-primary: #ffffff;
+  --color-danger: #b42318; --color-danger-bg: #fdf0ef;
+  --color-success: #1f6b45; --color-success-bg: #edf6f0;
+  --color-warning: #8a5a00; --color-warning-bg: #fbf3e2;
+  --color-info-bg: #f2f2f2;
+  --radius: 3px; --shadow: none;
+  --font-heading: inherit; --heading-weight: 700; --label-transform: uppercase; --label-spacing: 0.06em;
+}
+[data-theme-style="graphite"][data-theme-mode="dark"] {
+  --color-bg: #0d0d0d; --color-surface: #161616; --color-surface-2: #1f1f1f;
+  --color-text: #f0f0f0; --color-muted: #9a9a9a; --color-border: #2c2c2c;
+  --color-primary: #f0f0f0; --color-primary-hover: #ffffff; --color-on-primary: #0d0d0d;
+  --color-danger: #f19a92; --color-danger-bg: #3a1c1a;
+  --color-success: #8fd1ad; --color-success-bg: #18301f;
+  --color-warning: #e6c27a; --color-warning-bg: #352a15;
+  --color-info-bg: #1f1f1f;
+}
+@media (prefers-color-scheme: dark) {
+  [data-theme-style="graphite"][data-theme-mode="auto"] {
+  --color-bg: #0d0d0d; --color-surface: #161616; --color-surface-2: #1f1f1f;
+  --color-text: #f0f0f0; --color-muted: #9a9a9a; --color-border: #2c2c2c;
+  --color-primary: #f0f0f0; --color-primary-hover: #ffffff; --color-on-primary: #0d0d0d;
+  --color-danger: #f19a92; --color-danger-bg: #3a1c1a;
+  --color-success: #8fd1ad; --color-success-bg: #18301f;
+  --color-warning: #e6c27a; --color-warning-bg: #352a15;
+  --color-info-bg: #1f1f1f;
+  }
+}

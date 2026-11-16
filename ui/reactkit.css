@@ -1,11 +1,11 @@
 /*
  * Styles of the reactkit/ui components (classes prefixed "rk-").
  *
- * They use the application's design tokens with fallbacks:
- *   --color-bg, --color-surface, --color-text, --color-muted, --color-border,
- *   --color-primary, --color-on-primary, --color-danger, --color-danger-bg,
- *   --color-info-bg, --space, --radius.
- * Import once: `import "@reactkit/ui/reactkit.css";`.
+ * They use the design tokens of themes.css (with fallbacks), so they
+ * follow the theme applied on the page.
+ * Import once, after the themes:
+ *   import "@reactkit/ui/themes.css";
+ *   import "@reactkit/ui/reactkit.css";
  */
 
 /* Layout ------------------------------------------------------------------ */
@@ -49,7 +49,10 @@
 
 /* FormField --------------------------------------------------------------- */
 .rk-field { display: flex; flex-direction: column; gap: 0.3rem; }
-.rk-field label { font-weight: 600; font-size: 0.9rem; }
+.rk-field label {
+  font-weight: 600; font-size: 0.85rem; color: var(--color-muted);
+  text-transform: var(--label-transform, none); letter-spacing: var(--label-spacing, 0);
+}
 .rk-field input {
   min-height: 44px; padding: 0.5rem 0.75rem; font: inherit; color: var(--color-text, #222);
   background: var(--color-bg, #fff); border: 1px solid var(--color-border, #ccc); border-radius: var(--radius, 6px);
@@ -70,3 +73,19 @@
 }
 @keyframes rk-spin { to { transform: rotate(360deg); } }
 @media (prefers-reduced-motion: reduce) { .rk-spinner { animation-duration: 2.4s; } }
+
+/* ChoiceGroup ------------------------------------------------------------- */
+.rk-choice { display: flex; flex-direction: column; gap: 0.4rem; margin: 0; padding: 0; border: 0; }
+.rk-choice legend {
+  padding: 0; margin-bottom: 0.4rem; font-weight: 600; font-size: 0.85rem; color: var(--color-muted);
+  text-transform: var(--label-transform, none); letter-spacing: var(--label-spacing, 0);
+}
+.rk-choice-options { display: inline-flex; flex-wrap: wrap; border: 1px solid var(--color-border, #ccc); border-radius: var(--radius, 6px); overflow: hidden; width: fit-content; }
+.rk-choice-options label {
+  display: flex; align-items: center; min-height: 44px; padding: 0 1rem; cursor: pointer;
+  background: var(--color-surface, #fff); border-right: 1px solid var(--color-border, #ccc);
+}
+.rk-choice-options label:last-child { border-right: 0; }
+.rk-choice-options input { position: absolute; opacity: 0; pointer-events: none; }
+.rk-choice-options label:has(input:checked) { background: var(--color-primary, #1d4ed8); color: var(--color-on-primary, #fff); }
+.rk-choice-options label:has(input:focus-visible) { outline: 3px solid var(--color-primary, #1d4ed8); outline-offset: -3px; }

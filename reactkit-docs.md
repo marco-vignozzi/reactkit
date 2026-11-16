@@ -87,6 +87,27 @@ t("ui.cart.items", { count: 2 }); // "2 items"
 </Route>
 ```
 
+### `theme`
+
+| Name | Description | Status |
+|---|---|---|
+| `Theme` | `{ style: string, mode: "auto" \| "light" \| "dark" }` | ✅ |
+| `applyTheme(theme, target = <html>)` | sets `data-theme-style` / `data-theme-mode` on `target` | ✅ |
+| `cacheTheme(theme)` | saves it in localStorage (`THEME_STORAGE_KEY` = `"rk-theme"`); storage errors ignored | ✅ |
+| `setTheme(theme)` | `applyTheme` on `<html>` + `cacheTheme` | ✅ |
+
+To avoid a flash of the wrong theme, put this in the `<head>` of
+`index.html` (fallback theme inside):
+
+```html
+<script>
+  try { var t = JSON.parse(localStorage.getItem("rk-theme")); } catch (e) {}
+  t = t || { style: "paper", mode: "auto" };
+  var d = document.documentElement.dataset;
+  d.themeStyle = t.style; d.themeMode = t.mode;
+</script>
+```
+
 ### Planned
 
 | Name | Description | Status |
@@ -95,11 +116,23 @@ t("ui.cart.items", { count: 2 }); // "2 items"
 
 ## `ui/`
 
-Styles in `reactkit.css` (classes `rk-*`). They read the application's
-design tokens, with fallbacks: `--color-bg`, `--color-surface`,
-`--color-text`, `--color-muted`, `--color-border`, `--color-primary`,
-`--color-on-primary`, `--color-danger`, `--color-danger-bg`,
-`--color-info-bg`, `--space`, `--radius`. Breakpoint: 700px.
+Import `themes.css` then `reactkit.css`. Breakpoint: 700px.
+
+**Themes (`themes.css`).** Three styles, each light and dark, selected by
+two attributes on any element (usually `<html>`, see `app/theme`):
+`data-theme-style` = `paper` (warm neutrals, deep green, serif headings),
+`slate` (cool neutrals, blue-slate accent, soft corners), `graphite`
+(monochrome, sharp corners, uppercase labels); `data-theme-mode` = `auto`
+(follows `prefers-color-scheme`), `light`, `dark`. Tokens:
+`--color-bg`, `--color-surface`, `--color-surface-2`, `--color-text`,
+`--color-muted`, `--color-border`, `--color-primary`,
+`--color-primary-hover`, `--color-on-primary`, `--color-danger(-bg)`,
+`--color-success(-bg)`, `--color-warning(-bg)`, `--color-info-bg`,
+`--radius`, `--shadow`, `--font-heading`, `--heading-weight`,
+`--label-transform`, `--label-spacing`, `--space`.
+
+**Components (`reactkit.css`, classes `rk-*`)** read those tokens, with
+fallbacks.
 
 | Component | Props | Description | Status |
 |---|---|---|---|
@@ -108,4 +141,5 @@ design tokens, with fallbacks: `--color-bg`, `--color-surface`,
 | `FormField` | `label`, `errors?: string[]`, every `<input>` prop | label + input + error list; `aria-invalid` and `aria-describedby` when there are errors | ✅ |
 | `Alert` | `kind: "error" \| "info"`, `children` | message box (`role="alert"` / `"status"`); renders nothing for empty children | ✅ |
 | `Spinner` | `label: string` (accessible text) | CSS spinner, `role="status"` | ✅ |
+| `ChoiceGroup<V>` | `legend`, `options: { value, label }[]`, `value`, `onChange(value)`, `disabled?` | one choice among a few, as a segmented control made of radio buttons (keyboard and screen readers as a radio group) | ✅ |
 | `DataTable`, `ConfirmDialog`, `Toast` | — | — | 📝 |

@@ -8,3 +8,5 @@ export { SessionProvider, useSession } from "./session";
 export type { Session, SessionProviderProps } from "./session";
 export { RequireAuth, returnPath } from "./RequireAuth";
 export type { FromState, RequireAuthProps } from "./RequireAuth";
+export { applyTheme, cacheTheme, setTheme, THEME_STORAGE_KEY } from "./theme";
+export type { Theme } from "./theme";
