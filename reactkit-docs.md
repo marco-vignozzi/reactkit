@@ -108,11 +108,25 @@ To avoid a flash of the wrong theme, put this in the `<head>` of
 </script>
 ```
 
-### Planned
+### `useApi` — data loading
 
 | Name | Description | Status |
 |---|---|---|
-| `useApi(fn)` | `{ data, error, loading, reload }` | 📝 |
+| `useApi<T>(fn, deps = []): ApiState<T>` | runs `fn` on mount and when `deps` change; answers of outdated calls are ignored; returns `{ data, error, loading, reload }`. `data` is kept while reloading and after an error (the page can still show it next to the message) | ✅ |
+
+```tsx
+const orders = useApi(() => api.get<Order[]>(`/orders?status=${status}`), [status]);
+```
+
+In development React's StrictMode runs the first effect twice: the first
+answer is discarded, which is the intended behaviour.
+
+### `format` — amounts and dates
+
+| Name | Description | Status |
+|---|---|---|
+| `formatAmount(value: number \| string, locale = "it-IT"): string` | two decimals, thousands separators always (`"1.100,00"`; Intl's Italian default would give `"1100,00"`); accepts the API's decimal strings; throws for a value that is not a number (also `""`) | ✅ |
+| `formatDate(iso, empty = "—"): string` | `"2026-03-15"` → `"15/03/2026"`; `null` / `""` → `empty`; throws for a value that is not ISO | ✅ |
 
 ## `ui/`
 
@@ -141,5 +155,14 @@ fallbacks.
 | `FormField` | `label`, `errors?: string[]`, every `<input>` prop | label + input + error list; `aria-invalid` and `aria-describedby` when there are errors | ✅ |
 | `Alert` | `kind: "error" \| "info"`, `children` | message box (`role="alert"` / `"status"`); renders nothing for empty children | ✅ |
 | `Spinner` | `label: string` (accessible text) | CSS spinner, `role="status"` | ✅ |
+| `DataTable<T>` | `rows`, `columns: Column<T>[]`, `rowKey`, `actions?(row)`, `filterable = true`, `initialSort?`, `selected?: ReadonlySet<RowKey>` + `onSelectionChange?`, `empty` (shown with no rows), `caption` (accessible name) | sort by clicking a header (`aria-sort`; arrow in an `aria-hidden` span), text filter over every column, checkboxes when `selected` is given (header box = every visible row), actions column. Below 700px each row is a card of "label: value" lines with the same markup (CSS only) | ✅ |
+| `Column<T>` | `key`, `label`, `render?(row)`, `sortValue?(row)` (omitted = not sortable; numbers numerically, strings naturally, empty values last), `filterValue?(row)` (default `sortValue`, else `row[key]`), `align?: "end"` (numbers), `primary?` (title of the card) | — | ✅ |
+| `ConfirmDialog` | `open`, `title`, `children` (what will happen), `confirmLabel`, `danger?`, `busy?`, `onConfirm`, `onCancel` | native `<dialog>` (modal, focus kept inside): closes with the cancel button, Esc or a click on the backdrop (not while `busy`) | ✅ |
+| `ToastProvider` + `useToast()` | `duration = 4000` | `success`, `info` disappear after `duration`; `error` stays until closed (`role="alert"`); live region at the bottom, above the mobile nav bar | ✅ |
+| `UiLabelsProvider` + `useUiLabels()` | `labels: UiLabels` = `cancel`, `close`, `filter`, `noResults`, `selectAll`, `selectRow`, `actions` | texts the components use without a prop; required by `DataTable`, `ConfirmDialog`, `ToastProvider` (missing provider → error) | ✅ |
 | `ChoiceGroup<V>` | `legend`, `options: { value, label }[]`, `value`, `onChange(value)`, `disabled?` | one choice among a few, as a segmented control made of radio buttons (keyboard and screen readers as a radio group) | ✅ |
-| `DataTable`, `ConfirmDialog`, `Toast` | — | — | 📝 |
+
+**Buttons** (classes, for `<button>` and `<a>`): `rk-button`, plus
+`rk-button--primary`, `rk-button--ghost`, `rk-button--danger` (red text),
+`rk-button--danger-solid` (red background), `rk-button--small`.
+`rk-visually-hidden` hides an element but keeps it for screen readers.

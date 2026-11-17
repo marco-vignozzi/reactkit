@@ -1,2 +1,2 @@
 /** Version of reactkit (app + ui), bumped whenever its public API changes. */
-export const VERSION = "0.3.0";
+export const VERSION = "0.4.0";
