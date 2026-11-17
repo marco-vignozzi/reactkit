@@ -13,3 +13,5 @@ export type { Theme } from "./theme";
 export { useApi } from "./useApi";
 export type { ApiState } from "./useApi";
 export { formatAmount, formatDate } from "./format";
+export { pendingFrom, useConfirmedAction } from "./confirmation";
+export type { ConfirmationFlow, ConfirmedResult, PendingConfirmation } from "./confirmation";

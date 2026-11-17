@@ -1,5 +1,11 @@
 # reactkit changelog
 
+## 0.5.0 — 2026-11-17
+- app: `useConfirmedAction` / `pendingFrom` (operations the server asks to
+  confirm with 428: impact, required, given).
+- ui: `ConfirmationDialog` (the dialog of useConfirmedAction), `Badge`.
+- ui: `UiLabels` gains `confirm`, `confirmAgain`, `confirmationsLeft(count)`.
+
 ## 0.4.0 — 2026-11-17
 - app: `useApi` (load with deps, stale answers ignored, `reload`),
   `formatAmount` / `formatDate` (same output as djkit.it).

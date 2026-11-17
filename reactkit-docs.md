@@ -121,6 +121,24 @@ const orders = useApi(() => api.get<Order[]>(`/orders?status=${status}`), [statu
 In development React's StrictMode runs the first effect twice: the first
 answer is discarded, which is the intended behaviour.
 
+### `confirmation` — operations the server asks to confirm
+
+The backend answers 428 `{detail, impact: {key: count}, required, given}`
+until a destructive request carries enough confirmations
+(djkit `require_confirmation`).
+
+| Name | Description | Status |
+|---|---|---|
+| `useConfirmedAction(): [start, flow]` | `start(action)` runs `action(0)`; on 428 it waits for the user (`flow.pending`), then runs `action(given + 1)`, until it succeeds. Resolves to `{status: "done", value}` or `{status: "cancelled"}`; rejects with any other error. `flow` = `{ pending, busy, confirm, cancel }`, for `ConfirmationDialog` | ✅ |
+| `pendingFrom(error): PendingConfirmation \| null` | the 428 body as `{detail, impact, required, given}`, or null | ✅ |
+
+```tsx
+const [confirmDelete, flow] = useConfirmedAction();
+const result = await confirmDelete((n) => api.del(`/orders/${id}`, { confirmations: n }));
+if (result.status === "done") toast.success("Deleted.");
+<ConfirmationDialog flow={flow} title="Delete the order?" impactLabel={(key) => labels[key]} />
+```
+
 ### `format` — amounts and dates
 
 | Name | Description | Status |
@@ -159,7 +177,9 @@ fallbacks.
 | `Column<T>` | `key`, `label`, `render?(row)`, `sortValue?(row)` (omitted = not sortable; numbers numerically, strings naturally, empty values last), `filterValue?(row)` (default `sortValue`, else `row[key]`), `align?: "end"` (numbers), `primary?` (title of the card) | — | ✅ |
 | `ConfirmDialog` | `open`, `title`, `children` (what will happen), `confirmLabel`, `danger?`, `busy?`, `onConfirm`, `onCancel` | native `<dialog>` (modal, focus kept inside): closes with the cancel button, Esc or a click on the backdrop (not while `busy`) | ✅ |
 | `ToastProvider` + `useToast()` | `duration = 4000` | `success`, `info` disappear after `duration`; `error` stays until closed (`role="alert"`); live region at the bottom, above the mobile nav bar | ✅ |
-| `UiLabelsProvider` + `useUiLabels()` | `labels: UiLabels` = `cancel`, `close`, `filter`, `noResults`, `selectAll`, `selectRow`, `actions` | texts the components use without a prop; required by `DataTable`, `ConfirmDialog`, `ToastProvider` (missing provider → error) | ✅ |
+| `ConfirmationDialog` | `flow` (from `useConfirmedAction`), `title`, `impactLabel(key)`, `danger = true` | the server's message, the impact (keys with count > 0), "N more confirmations" when more than one is needed; button "confirm" the first time, "confirm again" after | ✅ |
+| `Badge` | `kind?: "neutral" \| "success" \| "warning" \| "danger"`, `children` | small status label | ✅ |
+| `UiLabelsProvider` + `useUiLabels()` | `labels: UiLabels` = `cancel`, `close`, `filter`, `noResults`, `selectAll`, `selectRow`, `actions`, `confirm`, `confirmAgain`, `confirmationsLeft(count)` | texts the components use without a prop; required by `DataTable`, `ConfirmDialog`, `ToastProvider` (missing provider → error) | ✅ |
 | `ChoiceGroup<V>` | `legend`, `options: { value, label }[]`, `value`, `onChange(value)`, `disabled?` | one choice among a few, as a segmented control made of radio buttons (keyboard and screen readers as a radio group) | ✅ |
 
 **Buttons** (classes, for `<button>` and `<a>`): `rk-button`, plus

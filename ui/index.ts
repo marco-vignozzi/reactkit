@@ -19,3 +19,7 @@ export { UiLabelsProvider, useUiLabels } from "./labels";
 export type { UiLabels } from "./labels";
 export { ToastProvider, useToast } from "./Toast";
 export type { ToastApi, ToastKind, ToastProviderProps } from "./Toast";
+export { Badge } from "./Badge";
+export type { BadgeProps } from "./Badge";
+export { ConfirmationDialog } from "./ConfirmationDialog";
+export type { ConfirmationDialogProps } from "./ConfirmationDialog";

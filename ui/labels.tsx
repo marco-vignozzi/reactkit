@@ -23,6 +23,12 @@ export interface UiLabels {
   selectRow: string;
   /** Header of the actions column (DataTable). */
   actions: string;
+  /** First confirm button (ConfirmationDialog). */
+  confirm: string;
+  /** Confirm button after the first confirmation (ConfirmationDialog). */
+  confirmAgain: string;
+  /** "N more confirmations needed" (ConfirmationDialog). */
+  confirmationsLeft: (count: number) => string;
 }
 
 const UiLabelsContext = createContext<UiLabels | null>(null);

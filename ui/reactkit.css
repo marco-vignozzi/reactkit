@@ -206,3 +206,22 @@
 @keyframes rk-toast-in { from { opacity: 0; transform: translateY(6px); } }
 @media (prefers-reduced-motion: reduce) { .rk-toast { animation: none; } }
 @media (max-width: 699px) { .rk-toasts { bottom: calc(72px + env(safe-area-inset-bottom)); } }
+
+/* Badge ------------------------------------------------------------------- */
+.rk-badge {
+  display: inline-flex; align-items: center; gap: 0.3rem; padding: 0.1rem 0.55rem; white-space: nowrap;
+  font-size: 0.78rem; font-weight: 600; border-radius: 999px;
+  background: var(--color-surface-2, #f0f0f0); color: var(--color-muted, #666);
+}
+.rk-badge--success { background: var(--color-success-bg, #e6f4ea); color: var(--color-success, #15803d); }
+.rk-badge--warning { background: var(--color-warning-bg, #fdf3e1); color: var(--color-warning, #92400e); }
+.rk-badge--danger { background: var(--color-danger-bg, #fde8e8); color: var(--color-danger, #b91c1c); }
+
+/* ConfirmationDialog ------------------------------------------------------ */
+.rk-confirmation { display: flex; flex-direction: column; gap: 0.75rem; }
+.rk-impact { margin: 0; border: 1px solid var(--color-border, #ddd); border-radius: var(--radius, 6px); }
+.rk-impact > div { display: flex; justify-content: space-between; gap: 1rem; padding: 0.45rem 0.75rem; }
+.rk-impact > div + div { border-top: 1px solid var(--color-border, #ddd); }
+.rk-impact dt { color: var(--color-muted, #666); }
+.rk-impact dd { margin: 0; font-weight: 600; font-variant-numeric: tabular-nums; }
+.rk-confirmation-left { font-weight: 600; color: var(--color-danger, #b91c1c); }
