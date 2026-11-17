@@ -123,14 +123,16 @@ answer is discarded, which is the intended behaviour.
 
 ### `confirmation` — operations the server asks to confirm
 
-The backend answers 428 `{detail, impact: {key: count}, required, given}`
+The backend answers 428 `{detail, impact: {key: value}, required, given}`
+(a value is a count, or a string such as a date or an amount: `ImpactValue`)
 until a destructive request carries enough confirmations
 (djkit `require_confirmation`).
 
 | Name | Description | Status |
 |---|---|---|
 | `useConfirmedAction(): [start, flow]` | `start(action)` runs `action(0)`; on 428 it waits for the user (`flow.pending`), then runs `action(given + 1)`, until it succeeds. Resolves to `{status: "done", value}` or `{status: "cancelled"}`; rejects with any other error. `flow` = `{ pending, busy, confirm, cancel }`, for `ConfirmationDialog` | ✅ |
-| `pendingFrom(error): PendingConfirmation \| null` | the 428 body as `{detail, impact, required, given}`, or null | ✅ |
+| `pendingFrom(error): PendingConfirmation \| null` | the 428 body as `{detail, impact, required, given}`, or null; throws when an impact value is not a number nor a string | ✅ |
+| `ImpactValue` | `number \| string`: one value of the impact | ✅ |
 
 ```tsx
 const [confirmDelete, flow] = useConfirmedAction();
@@ -144,7 +146,7 @@ if (result.status === "done") toast.success("Deleted.");
 | Name | Description | Status |
 |---|---|---|
 | `formatAmount(value: number \| string, locale = "it-IT"): string` | two decimals, thousands separators always (`"1.100,00"`; Intl's Italian default would give `"1100,00"`); accepts the API's decimal strings; throws for a value that is not a number (also `""`) | ✅ |
-| `formatDate(iso, empty = "—"): string` | `"2026-03-15"` → `"15/03/2026"`; `null` / `""` → `empty`; throws for a value that is not ISO | ✅ |
+| `formatDate(iso, empty = "—"): string` | `"2026-03-15"` → `"15/03/2026"`; a date-time with offset → its day in the browser's time zone; `null` / `""` → `empty`; throws for a value that is not ISO | ✅ |
 
 ## `ui/`
 
@@ -178,7 +180,7 @@ fallbacks.
 | `ConfirmDialog` | `open`, `title`, `children` (what will happen), `confirmLabel`, `danger?`, `busy?`, `onConfirm`, `onCancel` | native `<dialog>` (modal, focus kept inside): closes with the cancel button, Esc or a click on the backdrop (not while `busy`) | ✅ |
 | `ToastProvider` + `useToast()` | `duration = 4000` | `success`, `info` disappear after `duration`; `error` stays until closed (`role="alert"`); live region at the bottom, above the mobile nav bar | ✅ |
 | `SelectField` | `label`, `value`, `onChange(value)`, `children` (the `<option>`s), `errors = []`, `disabled` | label + select with an empty first option "—" + errors, like `FormField` (`aria-invalid`, `aria-describedby`) | ✅ |
-| `ConfirmationDialog` | `flow` (from `useConfirmedAction`), `title`, `impactLabel(key)`, `danger = true` | the server's message, the impact (keys with count > 0), "N more confirmations" when more than one is needed; button "confirm" the first time, "confirm again" after | ✅ |
+| `ConfirmationDialog` | `flow` (from `useConfirmedAction`), `title`, `impactLabel(key)`, `impactValue?(key, value)` (default: the value as it is), `danger = true` | the server's message, the impact (rows with a count > 0 or a non-empty string), "N more confirmations" when more than one is needed; button "confirm" the first time, "confirm again" after | ✅ |
 | `Badge` | `kind?: "neutral" \| "success" \| "warning" \| "danger"`, `children` | small status label | ✅ |
 | `UiLabelsProvider` + `useUiLabels()` | `labels: UiLabels` = `cancel`, `close`, `filter`, `noResults`, `selectAll`, `selectRow`, `actions`, `confirm`, `confirmAgain`, `confirmationsLeft(count)` | texts the components use without a prop; required by `DataTable`, `ConfirmDialog`, `ToastProvider` (missing provider → error) | ✅ |
 | `ChoiceGroup<V>` | `legend`, `options: { value, label }[]`, `value`, `onChange(value)`, `disabled?` | one choice among a few, as a segmented control made of radio buttons (keyboard and screen readers as a radio group) | ✅ |

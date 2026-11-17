@@ -3,7 +3,8 @@
  *
  * The backend (djkit.errors.require_confirmation) answers 428 until the
  * request carries enough confirmations, with what would be lost:
- *   {detail, impact: {key: count}, required, given}.
+ *   {detail, impact: {key: value}, required, given}; a value is usually a
+ *   count, sometimes a date or an amount (string).
  * useConfirmedAction runs the operation with 0 confirmations, shows the
  * 428 to the user (ConfirmationDialog in reactkit/ui), and repeats it with
  * one confirmation more each time the user confirms, until it succeeds.
@@ -13,12 +14,15 @@ import { useCallback, useRef, useState } from "react";
 
 import { ApiError } from "./http";
 
+/** One value of a 428 impact: a count, or a string such as a date or an amount. */
+export type ImpactValue = number | string;
+
 /** A 428 waiting for the user. */
 export interface PendingConfirmation {
   /** The server's message (e.g. why two confirmations are needed). */
   detail: string;
-  /** What would be lost: {key: count}; keys are the server's codes. */
-  impact: Record<string, number>;
+  /** What would be lost: {key: value}; keys are the server's codes, values counts or strings (dates, amounts). */
+  impact: Record<string, ImpactValue>;
   /** Confirmations needed. */
   required: number;
   /** Confirmations already given (the next request sends given + 1). */
@@ -50,7 +54,11 @@ export function pendingFrom(error: unknown): PendingConfirmation | null {
   if (!(error instanceof ApiError) || error.status !== 428 || error.body === null) return null;
   const { impact, required, given } = error.body;
   if (typeof required !== "number" || typeof given !== "number" || typeof impact !== "object" || impact === null) return null;
-  return { detail: error.detail, impact: impact as Record<string, number>, required, given };
+  for (const [key, value] of Object.entries(impact)) {
+    // Fail loudly: a value the dialog cannot show is a bug of the server or of this kit.
+    if (typeof value !== "number" && typeof value !== "string") throw new Error(`pendingFrom: impact "${key}" is not a number nor a string`);
+  }
+  return { detail: error.detail, impact: impact as Record<string, ImpactValue>, required, given };
 }
 
 /**

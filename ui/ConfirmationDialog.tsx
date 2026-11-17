@@ -1,10 +1,13 @@
 /**
  * Dialog of a server-side confirmation (useConfirmedAction in
- * reactkit/app): the server's message, what would be lost, how many
+ * reactkit/app): the server's message, what would be lost (counts, dates,
+ * amounts: `impactValue` formats them), how many
  * confirmations are still needed, and the confirm button ("Confirm" the
  * first time, "Confirm again" after).
  */
-import type { ConfirmationFlow } from "../app/confirmation";
+import type { ReactNode } from "react";
+
+import type { ConfirmationFlow, ImpactValue } from "../app/confirmation";
 import { ConfirmDialog } from "./ConfirmDialog";
 import { useUiLabels } from "./labels";
 
@@ -16,15 +19,20 @@ export interface ConfirmationDialogProps {
   title: string;
   /** Label of an impact key (e.g. "leases" -> "Leases"). */
   impactLabel: (key: string) => string;
+  /**
+   * How a value is shown (e.g. a date); default: the value as it is.
+   * Rows with 0 or "" are not shown.
+   */
+  impactValue?: (key: string, value: ImpactValue) => ReactNode;
   /** Destructive action: red confirm button. Default true. */
   danger?: boolean;
 }
 
 /** Renders the dialog while the flow waits for the user. */
-export function ConfirmationDialog({ flow, title, impactLabel, danger = true }: ConfirmationDialogProps) {
+export function ConfirmationDialog({ flow, title, impactLabel, impactValue = (_key, value) => value, danger = true }: ConfirmationDialogProps) {
   const labels = useUiLabels();
   const pending = flow.pending;
-  const rows = pending === null ? [] : Object.entries(pending.impact).filter(([, count]) => count > 0);
+  const rows = pending === null ? [] : Object.entries(pending.impact).filter(([, value]) => (typeof value === "number" ? value > 0 : value !== ""));
   const left = pending === null ? 0 : pending.required - pending.given;
   return (
     <ConfirmDialog
@@ -41,10 +49,10 @@ export function ConfirmationDialog({ flow, title, impactLabel, danger = true }: 
           <p>{pending.detail}</p>
           {rows.length > 0 && (
             <dl className="rk-impact">
-              {rows.map(([key, count]) => (
+              {rows.map(([key, value]) => (
                 <div key={key}>
                   <dt>{impactLabel(key)}</dt>
-                  <dd>{count}</dd>
+                  <dd>{impactValue(key, value)}</dd>
                 </div>
               ))}
             </dl>

@@ -1,5 +1,13 @@
 # reactkit changelog
 
+## 0.7.0 — 2026-11-17
+- app: a 428 impact value can be a string too (`ImpactValue = number |
+  string`: dates, amounts); `pendingFrom` throws on any other type.
+- ui: `ConfirmationDialog` gains `impactValue(key, value)` (how a value is
+  shown); rows with 0 or "" are hidden (before, string values were always
+  hidden).
+- app: `formatDate` accepts an ISO date-time too and shows its local day.
+
 ## 0.6.0 — 2026-11-17
 - ui: `SelectField` (drop-down list with label and errors, like FormField);
   `.rk-field select` styled like the inputs.
