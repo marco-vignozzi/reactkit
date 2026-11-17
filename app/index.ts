@@ -1,6 +1,6 @@
 /** Public API of reactkit/app: non-visual functionality (never imports ui/). */
 export { readCookie } from "./cookies";
-export { ApiError, createApiClient } from "./http";
+export { ApiError, createApiClient, queryString } from "./http";
 export type { ApiClient, ApiClientOptions, HttpMethod, UnauthorizedListener } from "./http";
 export { createTranslator, formatText, TextsProvider, useTexts } from "./texts";
 export type { TextLeaf, TextParams, TextsProviderProps, TextTree, Translate } from "./texts";
@@ -20,4 +20,4 @@ export type { DateRange, PeriodKind } from "./periods";
 export { useCooldowns } from "./cooldown";
 export type { Cooldowns } from "./cooldown";
 export { pendingFrom, useConfirmedAction } from "./confirmation";
-export type { ConfirmationFlow, ConfirmedResult, ImpactValue, PendingConfirmation } from "./confirmation";
+export type { ConfirmationFlow, ConfirmedResult, ImpactScalar, ImpactValue, PendingConfirmation } from "./confirmation";

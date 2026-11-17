@@ -1,5 +1,13 @@
 # reactkit changelog
 
+## 0.11.0 — 2026-11-17
+- app: `ImpactValue` also `null` and a flat object (`ImpactScalar` values), e.g. the
+  row a deletion keeps `{id, date, amount}`; `pendingFrom` accepts them (it threw).
+- ui: `ConfirmationDialog` hides `null` rows; an object value needs `impactValue`
+  (the default formatter throws).
+- app: `queryString(params)` — query string of the parameters that are set
+  (undefined, null and "" left out), `""` when none is.
+
 ## 0.10.0 — 2026-11-17
 - app: `periods` — `periodRange(kind, day)` (month, quarter, half year,
   year, two years containing a day, or no limit), `shiftPeriod(kind, day,

@@ -181,3 +181,22 @@ export function createApiClient(options: ApiClientOptions): ApiClient {
     },
   };
 }
+
+/**
+ * Query string of the parameters that are set: undefined, null and ""
+ * are left out, every other value is written with String().
+ *
+ * @param params name -> value.
+ * @returns "?a=1&b=2", or "" when no parameter is set.
+ *
+ * @example
+ *   queryString({ status: "open", page: 2, q: "" }) // "?status=open&page=2"
+ */
+export function queryString(params: object): string {
+  const query = new URLSearchParams();
+  for (const [name, value] of Object.entries(params)) {
+    if (value !== undefined && value !== null && value !== "") query.set(name, String(value));
+  }
+  const text = query.toString();
+  return text === "" ? "" : `?${text}`;
+}

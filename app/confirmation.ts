@@ -4,7 +4,8 @@
  * The backend (djkit.errors.require_confirmation) answers 428 until the
  * request carries enough confirmations, with what would be lost:
  *   {detail, impact: {key: value}, required, given}; a value is usually a
- *   count, sometimes a date or an amount (string).
+ *   count, sometimes a date or an amount (string), a row described by a
+ *   flat object (e.g. {id, date, amount}) or null (nothing of that kind).
  * useConfirmedAction runs the operation with 0 confirmations, shows the
  * 428 to the user (ConfirmationDialog in reactkit/ui), and repeats it with
  * one confirmation more each time the user confirms, until it succeeds.
@@ -14,14 +15,33 @@ import { useCallback, useRef, useState } from "react";
 
 import { ApiError } from "./http";
 
-/** One value of a 428 impact: a count, or a string such as a date or an amount. */
-export type ImpactValue = number | string;
+/** A flat value inside an impact row. */
+export type ImpactScalar = number | string | boolean | null;
+
+/**
+ * One value of a 428 impact: a count, a string such as a date or an
+ * amount, a row described by a flat object (e.g. the payment that is kept:
+ * {id, date, amount}), or null (nothing of that kind).
+ */
+export type ImpactValue = number | string | null | Record<string, ImpactScalar>;
+
+/**
+ * Whether a decoded JSON value is an ImpactValue.
+ *
+ * @param value one value of the impact.
+ * @returns true for a number, a string, null or a flat object of scalars.
+ */
+function isImpactValue(value: unknown): value is ImpactValue {
+  if (value === null || typeof value === "number" || typeof value === "string") return true;
+  if (typeof value !== "object" || Array.isArray(value)) return false;
+  return Object.values(value).every((inner) => inner === null || ["number", "string", "boolean"].includes(typeof inner));
+}
 
 /** A 428 waiting for the user. */
 export interface PendingConfirmation {
   /** The server's message (e.g. why two confirmations are needed). */
   detail: string;
-  /** What would be lost: {key: value}; keys are the server's codes, values counts or strings (dates, amounts). */
+  /** What would be lost: {key: value}; keys are the server's codes, values counts, strings (dates, amounts), flat objects or null. */
   impact: Record<string, ImpactValue>;
   /** Confirmations needed. */
   required: number;
@@ -56,7 +76,7 @@ export function pendingFrom(error: unknown): PendingConfirmation | null {
   if (typeof required !== "number" || typeof given !== "number" || typeof impact !== "object" || impact === null) return null;
   for (const [key, value] of Object.entries(impact)) {
     // Fail loudly: a value the dialog cannot show is a bug of the server or of this kit.
-    if (typeof value !== "number" && typeof value !== "string") throw new Error(`pendingFrom: impact "${key}" is not a number nor a string`);
+    if (!isImpactValue(value)) throw new Error(`pendingFrom: impact "${key}" is not a number, a string, null or a flat object`);
   }
   return { detail: error.detail, impact: impact as Record<string, ImpactValue>, required, given };
 }

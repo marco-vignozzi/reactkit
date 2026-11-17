@@ -37,6 +37,7 @@ through props or arguments. Status: ✅ implemented, 📝 planned.
 | `get`, `post`, `put`, `patch`, `del` | shortcuts of `request` | ✅ |
 | `ApiClient.onUnauthorized(listener): () => void` | listener called on every 401; returns the unsubscribe function | ✅ |
 | `ApiError` | `status` (0 = server not reachable, see `isNetworkError`), `detail` (the body's `detail`, `""` if none), `errors` (`{field: string[]}`, `{}` if none), `body` (whole decoded body or `null`) | ✅ |
+| `queryString(params: object): string` | `"?a=1&b=2"` from the parameters that are set (`undefined`, `null` and `""` left out, others with `String()`), `""` when none is | ✅ |
 
 ```ts
 const api = createApiClient({ baseUrl: "/api", csrfPath: "/auth/csrf" });
@@ -135,15 +136,15 @@ const [params, update] = useQueryParams();
 ### `confirmation` — operations the server asks to confirm
 
 The backend answers 428 `{detail, impact: {key: value}, required, given}`
-(a value is a count, or a string such as a date or an amount: `ImpactValue`)
+(a value is a count, a string such as a date or an amount, a row described by a flat object such as `{id, date, amount}`, or `null` for nothing of that kind: `ImpactValue`)
 until a destructive request carries enough confirmations
 (djkit `require_confirmation`).
 
 | Name | Description | Status |
 |---|---|---|
 | `useConfirmedAction(): [start, flow]` | `start(action)` runs `action(0)`; on 428 it waits for the user (`flow.pending`), then runs `action(given + 1)`, until it succeeds. Resolves to `{status: "done", value}` or `{status: "cancelled"}`; rejects with any other error. `flow` = `{ pending, busy, confirm, cancel }`, for `ConfirmationDialog` | ✅ |
-| `pendingFrom(error): PendingConfirmation \| null` | the 428 body as `{detail, impact, required, given}`, or null; throws when an impact value is not a number nor a string | ✅ |
-| `ImpactValue` | `number \| string`: one value of the impact | ✅ |
+| `pendingFrom(error): PendingConfirmation \| null` | the 428 body as `{detail, impact, required, given}`, or null; throws when an impact value is not a number, a string, `null` or a flat object of scalars | ✅ |
+| `ImpactValue` | `number \| string \| null \| Record<string, ImpactScalar>`: one value of the impact (`ImpactScalar` = `number \| string \| boolean \| null`) | ✅ |
 
 ```tsx
 const [confirmDelete, flow] = useConfirmedAction();
@@ -220,7 +221,7 @@ fallbacks.
 | `ConfirmDialog` | `open`, `title`, `children` (what will happen), `confirmLabel`, `danger?`, `busy?`, `onConfirm`, `onCancel` | native `<dialog>` (modal, focus kept inside): closes with the cancel button, Esc or a click on the backdrop (not while `busy`) | ✅ |
 | `ToastProvider` + `useToast()` | `duration = 4000` | `success`, `info` disappear after `duration`; `error` stays until closed (`role="alert"`); live region at the bottom, above the mobile nav bar | ✅ |
 | `SelectField` | `label`, `value`, `onChange(value)`, `children` (the `<option>`s), `errors = []`, `disabled`, `emptyLabel = "—"` | label + select with an empty first option (`emptyLabel`, e.g. "All" in a filter; `null` = no empty option, a choice is required) + errors, like `FormField` (`aria-invalid`, `aria-describedby`) | ✅ |
-| `ConfirmationDialog` | `flow` (from `useConfirmedAction`), `title`, `impactLabel(key)`, `impactValue?(key, value)` (default: the value as it is), `danger = true`, `children?` (note under the server's message) | the server's message, the caller's note, the impact (rows with a count > 0 or a non-empty string), "N more confirmations" when more than one is needed; button "confirm" the first time, "confirm again" after | ✅ |
+| `ConfirmationDialog` | `flow` (from `useConfirmedAction`), `title`, `impactLabel(key)`, `impactValue?(key, value)` (default: a count or a string as it is; required for object values, the dialog throws without it), `danger = true`, `children?` (note under the server's message) | the server's message, the caller's note, the impact (rows with a count > 0, a non-empty string or an object; `null` rows hidden), "N more confirmations" when more than one is needed; button "confirm" the first time, "confirm again" after | ✅ |
 | `Badge` | `kind?: "neutral" \| "success" \| "caution" \| "warning" \| "danger"`, `children` | small status label | ✅ |
 | `UiLabelsProvider` + `useUiLabels()` | `labels: UiLabels` = `cancel`, `close`, `filter`, `noResults`, `selectAll`, `selectRow`, `actions`, `confirm`, `confirmAgain`, `confirmationsLeft(count)` | texts the components use without a prop; required by `DataTable`, `ConfirmDialog`, `ToastProvider` (missing provider → error) | ✅ |
 | `ExplainedSection` | `title`, `description`, `reference`, `explanationLabel`, `explanation`, `controls?`, `empty?`, `emptyText?`, `children?` | a report section that explains itself: h2 title, one sentence on what it shows, the period or date always visible, optional controls, a collapsible `<details>` with how the figures are computed, then `children` or the empty state (`empty`) | ✅ |
