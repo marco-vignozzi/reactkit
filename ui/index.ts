@@ -32,3 +32,5 @@ export type { LinkTab, LinkTabsProps } from "./LinkTabs";
 export type { NavMore } from "./NavBar";
 export { PAGE_SIZES, pageCount, Pagination } from "./Pagination";
 export type { PaginationProps } from "./Pagination";
+export { MonthGrid, monthRange, shiftMonth } from "./MonthGrid";
+export type { MonthGridProps } from "./MonthGrid";

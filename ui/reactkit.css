@@ -288,3 +288,32 @@
 .rk-explained-how-body { color: var(--color-muted, #666); font-size: 0.95rem; }
 .rk-explained-how-body ul { margin: 0.25rem 0; padding-left: 1.25rem; }
 .rk-explained-empty { margin: 0; color: var(--color-muted, #666); font-style: italic; }
+
+/* MonthGrid (0.13.0) ------------------------------------------------------ */
+.rk-month { display: flex; flex-direction: column; gap: 0.75rem; }
+.rk-month__head { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; }
+.rk-month__title { margin: 0; font-size: 1.15rem; text-transform: capitalize; text-align: center; }
+.rk-month__grid { display: flex; flex-direction: column; border: 1px solid var(--color-border, #ddd); border-radius: var(--radius, 6px); overflow: hidden; }
+.rk-month__row { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); }
+.rk-month__row + .rk-month__row { border-top: 1px solid var(--color-border, #ddd); }
+.rk-month__weekday {
+  padding: 0.35rem; text-align: center; font-size: 0.8rem; font-weight: 600; color: var(--color-muted, #666);
+  background: var(--color-surface-2, transparent);
+}
+.rk-month__day {
+  min-height: 6.5rem; min-width: 0; padding: 0.3rem; display: flex; flex-direction: column; gap: 0.25rem;
+  background: var(--color-surface, #fff); overflow-wrap: anywhere;
+}
+.rk-month__day + .rk-month__day { border-left: 1px solid var(--color-border, #ddd); }
+.rk-month__day--blank { background: var(--color-surface-2, transparent); }
+.rk-month__day--today { box-shadow: inset 0 0 0 2px var(--color-primary, #1d4ed8); }
+.rk-month__number { font-size: 0.8rem; font-weight: 600; color: var(--color-muted, #666); font-variant-numeric: tabular-nums; }
+.rk-month__list { display: none; list-style: none; margin: 0; padding: 0; }
+.rk-month__item {
+  display: flex; flex-direction: column; gap: 0.3rem; padding: 0.6rem; background: var(--color-surface, #fff);
+  border: 1px solid var(--color-border, #ddd); border-radius: var(--radius, 6px);
+}
+@media (max-width: 639px) {
+  .rk-month__grid { display: none; }
+  .rk-month__list { display: flex; flex-direction: column; gap: 0.5rem; }
+}

@@ -1,5 +1,11 @@
 # reactkit changelog
 
+## 0.13.0 — 2026-11-17
+- ui: `MonthGrid` — calendar grid of one month (Monday first) with the
+  caller's content in each day and previous / next arrows; below 640px it
+  becomes a list of the days with content. Helpers `shiftMonth(month,
+  steps)` and `monthRange(month)` ("YYYY-MM" -> first and last day).
+
 ## 0.12.1 — 2026-11-17
 - ui: `LinkTabs` — tabs wrap onto a new line instead of scrolling, so
   every tab stays visible on narrow screens.
