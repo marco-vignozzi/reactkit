@@ -1,5 +1,9 @@
 # reactkit changelog
 
+## 0.6.0 — 2026-11-17
+- ui: `SelectField` (drop-down list with label and errors, like FormField);
+  `.rk-field select` styled like the inputs.
+
 ## 0.5.0 — 2026-11-17
 - app: `useConfirmedAction` / `pendingFrom` (operations the server asks to
   confirm with 428: impact, required, given).

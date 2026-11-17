@@ -53,11 +53,11 @@
   font-weight: 600; font-size: 0.85rem; color: var(--color-muted);
   text-transform: var(--label-transform, none); letter-spacing: var(--label-spacing, 0);
 }
-.rk-field input {
+.rk-field input, .rk-field select {
   min-height: 44px; padding: 0.5rem 0.75rem; font: inherit; color: var(--color-text, #222);
   background: var(--color-bg, #fff); border: 1px solid var(--color-border, #ccc); border-radius: var(--radius, 6px);
 }
-.rk-field input[aria-invalid="true"] { border-color: var(--color-danger, #b91c1c); }
+.rk-field input[aria-invalid="true"], .rk-field select[aria-invalid="true"] { border-color: var(--color-danger, #b91c1c); }
 .rk-field-errors { margin: 0; padding: 0; list-style: none; color: var(--color-danger, #b91c1c); font-size: 0.85rem; }
 
 /* Alert ------------------------------------------------------------------- */
