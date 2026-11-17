@@ -172,10 +172,24 @@ if (result.status === "done") toast.success("Deleted.");
 | `isPeriodKind(value): value is PeriodKind` | checks a value read e.g. from the URL | ✅ |
 | `periodRange(kind, day): DateRange` | `{from, to}` (ISO, both included) of the period that holds `day`: calendar month; quarter from Jan/Apr/Jul/Oct; half from Jan/Jul; year; `two_years` = the year of the day and the one before; `all` → both `null`. Throws for a day that is not ISO | ✅ |
 | `shiftPeriod(kind, day, steps): string` | the first day of the period `steps` periods away (`-1` back, `1` forward); `all` returns `day` | ✅ |
+| `termEnd(start, years): string` | last day of a term of whole years: the day before the same date `years` later (`"2026-03-15", 4` → `"2030-03-14"`; `"2028-02-29", 1` → `"2029-02-28"`). Throws for a start that is not ISO | ✅ |
 
 ```ts
 periodRange("quarter", "2026-05-20"); // {from: "2026-04-01", to: "2026-06-30"}
 shiftPeriod("quarter", "2026-05-20", -1); // "2026-01-01"
+```
+
+### `forms` — form helpers
+
+A multi-step form keeps "Next" disabled while a required field of the
+current step is blank; the server still validates everything.
+
+| Name | Description | Status |
+|---|---|---|
+| `missingFields(values, names): K[]` | the names among `names` whose value in `values` is empty or only spaces, in the order of `names` | ✅ |
+
+```ts
+missingFields({ name: "Ann", city: " " }, ["name", "city"]); // ["city"]
 ```
 
 ### `cooldown` — buttons disabled for a while

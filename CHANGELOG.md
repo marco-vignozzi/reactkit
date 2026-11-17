@@ -1,5 +1,13 @@
 # reactkit changelog
 
+## 0.15.0 — 2026-11-18
+- app: `missingFields(values, names)` — the required fields still blank;
+  a multi-step form keeps "Next" disabled while the current step has one.
+
+## 0.14.0 — 2026-11-17
+- app: `termEnd(start, years)` — last day of a term of whole years (the
+  day before the same date `years` later; 29/2 -> 28/2).
+
 ## 0.13.0 — 2026-11-17
 - ui: `MonthGrid` — calendar grid of one month (Monday first) with the
   caller's content in each day and previous / next arrows; below 640px it

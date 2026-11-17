@@ -94,3 +94,18 @@ export function shiftPeriod(kind: PeriodKind, day: string, steps: number): strin
   const [year, month] = parts(range.from as string);
   return isoOf(year, month + steps * MONTHS[kind], 1);
 }
+
+/**
+ * Last day of a term of whole years starting on a day (e.g. the first
+ * term of a lease): the day before the same date `years` later.
+ *
+ * @param start the first day (ISO).
+ * @param years length of the term, in years.
+ * @returns the last day (ISO); 15/3/2026 + 4 -> 14/3/2030, 29/2/2028 + 1 -> 28/2/2029.
+ * @throws Error for a start that is not ISO (fail loudly).
+ */
+export function termEnd(start: string, years: number): string {
+  const [year, month, day] = parts(start);
+  // 29/2 of a year that is not leap rolls to 1/3: the day before is 28/2.
+  return isoOf(year + years, month, day - 1);
+}
