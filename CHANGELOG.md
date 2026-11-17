@@ -1,5 +1,9 @@
 # reactkit changelog
 
+## 0.8.0 — 2026-11-17
+- ui: `ConfirmationDialog` accepts `children`: a note of the caller shown
+  under the server's message (e.g. what the operation keeps).
+
 ## 0.7.0 — 2026-11-17
 - app: a 428 impact value can be a string too (`ImpactValue = number |
   string`: dates, amounts); `pendingFrom` throws on any other type.

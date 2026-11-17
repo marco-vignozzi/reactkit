@@ -1,6 +1,7 @@
 /**
  * Dialog of a server-side confirmation (useConfirmedAction in
- * reactkit/app): the server's message, what would be lost (counts, dates,
+ * reactkit/app): the server's message, an optional note of the caller
+ * (children), what would be lost (counts, dates,
  * amounts: `impactValue` formats them), how many
  * confirmations are still needed, and the confirm button ("Confirm" the
  * first time, "Confirm again" after).
@@ -26,10 +27,12 @@ export interface ConfirmationDialogProps {
   impactValue?: (key: string, value: ImpactValue) => ReactNode;
   /** Destructive action: red confirm button. Default true. */
   danger?: boolean;
+  /** Optional note shown under the server's message (e.g. what is kept). */
+  children?: ReactNode;
 }
 
 /** Renders the dialog while the flow waits for the user. */
-export function ConfirmationDialog({ flow, title, impactLabel, impactValue = (_key, value) => value, danger = true }: ConfirmationDialogProps) {
+export function ConfirmationDialog({ flow, title, impactLabel, impactValue = (_key, value) => value, danger = true, children }: ConfirmationDialogProps) {
   const labels = useUiLabels();
   const pending = flow.pending;
   const rows = pending === null ? [] : Object.entries(pending.impact).filter(([, value]) => (typeof value === "number" ? value > 0 : value !== ""));
@@ -47,6 +50,7 @@ export function ConfirmationDialog({ flow, title, impactLabel, impactValue = (_k
       {pending !== null && (
         <div className="rk-confirmation">
           <p>{pending.detail}</p>
+          {children}
           {rows.length > 0 && (
             <dl className="rk-impact">
               {rows.map(([key, value]) => (
