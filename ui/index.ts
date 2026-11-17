@@ -23,5 +23,7 @@ export { Badge } from "./Badge";
 export type { BadgeProps } from "./Badge";
 export { ConfirmationDialog } from "./ConfirmationDialog";
 export type { ConfirmationDialogProps } from "./ConfirmationDialog";
+export { ExplainedSection } from "./ExplainedSection";
+export type { ExplainedSectionProps } from "./ExplainedSection";
 export { SelectField } from "./SelectField";
 export type { SelectFieldProps } from "./SelectField";

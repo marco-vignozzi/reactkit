@@ -121,6 +121,17 @@ const orders = useApi(() => api.get<Order[]>(`/orders?status=${status}`), [statu
 In development React's StrictMode runs the first effect twice: the first
 answer is discarded, which is the intended behaviour.
 
+### `queryParams` — URL parameters as page state
+
+| Name | Description | Status |
+|---|---|---|
+| `useQueryParams(): [URLSearchParams, update(changes, { push? })]` | the parameters of this render and an update that starts from the current URL (`window.location.search`), not from the render: React Router's `setSearchParams` (also functional) would let a second quick change undo the first. `changes`: value = set, `""`/`null` = remove; replaces the history entry unless `push` | ✅ |
+
+```tsx
+const [params, update] = useQueryParams();
+<input type="date" value={params.get("from") ?? ""} onChange={(e) => update({ from: e.target.value })} />
+```
+
 ### `confirmation` — operations the server asks to confirm
 
 The backend answers 428 `{detail, impact: {key: value}, required, given}`
@@ -147,8 +158,24 @@ if (result.status === "done") toast.success("Deleted.");
 |---|---|---|
 | `formatAmount(value: number \| string, locale = "it-IT"): string` | two decimals, thousands separators always (`"1.100,00"`; Intl's Italian default would give `"1100,00"`); accepts the API's decimal strings; throws for a value that is not a number (also `""`) | ✅ |
 | `decimalInput(typed): string` | a decimal typed by the user for the API: trimmed, comma → point (`"700,5"` → `"700.5"`); no check that it is a number | ✅ |
+| `formatPercent(value: number \| string): string` | a percentage without symbol and useless zeros (`"50.00"` → `"50"`, `"33.33"` → `"33,33"`); throws for a value that is not a number | ✅ |
 | `todayIso(): string` | today as `"2026-03-15"` in the browser's time zone | ✅ |
 | `formatDate(iso, empty = "—"): string` | `"2026-03-15"` → `"15/03/2026"`; a date-time with offset → its day in the browser's time zone; `null` / `""` → `empty`; throws for a value that is not ISO | ✅ |
+
+### `periods` — ready-made calendar periods
+
+| Name | Description | Status |
+|---|---|---|
+| `type PeriodKind` | `"month" \| "quarter" \| "half" \| "year" \| "two_years" \| "all"` | ✅ |
+| `PERIOD_KINDS` | every kind, in the order a chooser shows them | ✅ |
+| `isPeriodKind(value): value is PeriodKind` | checks a value read e.g. from the URL | ✅ |
+| `periodRange(kind, day): DateRange` | `{from, to}` (ISO, both included) of the period that holds `day`: calendar month; quarter from Jan/Apr/Jul/Oct; half from Jan/Jul; year; `two_years` = the year of the day and the one before; `all` → both `null`. Throws for a day that is not ISO | ✅ |
+| `shiftPeriod(kind, day, steps): string` | the first day of the period `steps` periods away (`-1` back, `1` forward); `all` returns `day` | ✅ |
+
+```ts
+periodRange("quarter", "2026-05-20"); // {from: "2026-04-01", to: "2026-06-30"}
+shiftPeriod("quarter", "2026-05-20", -1); // "2026-01-01"
+```
 
 ### `cooldown` — buttons disabled for a while
 
@@ -192,10 +219,11 @@ fallbacks.
 | `Column<T>` | `key`, `label`, `render?(row)`, `sortValue?(row)` (omitted = not sortable; numbers numerically, strings naturally, empty values last), `filterValue?(row)` (default `sortValue`, else `row[key]`), `align?: "end"` (numbers), `primary?` (title of the card) | — | ✅ |
 | `ConfirmDialog` | `open`, `title`, `children` (what will happen), `confirmLabel`, `danger?`, `busy?`, `onConfirm`, `onCancel` | native `<dialog>` (modal, focus kept inside): closes with the cancel button, Esc or a click on the backdrop (not while `busy`) | ✅ |
 | `ToastProvider` + `useToast()` | `duration = 4000` | `success`, `info` disappear after `duration`; `error` stays until closed (`role="alert"`); live region at the bottom, above the mobile nav bar | ✅ |
-| `SelectField` | `label`, `value`, `onChange(value)`, `children` (the `<option>`s), `errors = []`, `disabled`, `emptyLabel = "—"` | label + select with an empty first option (`emptyLabel`, e.g. "All" in a filter) + errors, like `FormField` (`aria-invalid`, `aria-describedby`) | ✅ |
+| `SelectField` | `label`, `value`, `onChange(value)`, `children` (the `<option>`s), `errors = []`, `disabled`, `emptyLabel = "—"` | label + select with an empty first option (`emptyLabel`, e.g. "All" in a filter; `null` = no empty option, a choice is required) + errors, like `FormField` (`aria-invalid`, `aria-describedby`) | ✅ |
 | `ConfirmationDialog` | `flow` (from `useConfirmedAction`), `title`, `impactLabel(key)`, `impactValue?(key, value)` (default: the value as it is), `danger = true`, `children?` (note under the server's message) | the server's message, the caller's note, the impact (rows with a count > 0 or a non-empty string), "N more confirmations" when more than one is needed; button "confirm" the first time, "confirm again" after | ✅ |
 | `Badge` | `kind?: "neutral" \| "success" \| "caution" \| "warning" \| "danger"`, `children` | small status label | ✅ |
 | `UiLabelsProvider` + `useUiLabels()` | `labels: UiLabels` = `cancel`, `close`, `filter`, `noResults`, `selectAll`, `selectRow`, `actions`, `confirm`, `confirmAgain`, `confirmationsLeft(count)` | texts the components use without a prop; required by `DataTable`, `ConfirmDialog`, `ToastProvider` (missing provider → error) | ✅ |
+| `ExplainedSection` | `title`, `description`, `reference`, `explanationLabel`, `explanation`, `controls?`, `empty?`, `emptyText?`, `children?` | a report section that explains itself: h2 title, one sentence on what it shows, the period or date always visible, optional controls, a collapsible `<details>` with how the figures are computed, then `children` or the empty state (`empty`) | ✅ |
 | `ChoiceGroup<V>` | `legend`, `options: { value, label }[]`, `value`, `onChange(value)`, `disabled?` | one choice among a few, as a segmented control made of radio buttons (keyboard and screen readers as a radio group) | ✅ |
 
 **Buttons** (classes, for `<button>` and `<a>`): `rk-button`, plus

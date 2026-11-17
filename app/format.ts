@@ -72,3 +72,17 @@ export function todayIso(): string {
   const now = new Date();
   return new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
 }
+
+/**
+ * Formats a percentage without the symbol and without useless zeros, as
+ * the backend does (djkit.it format_percent).
+ *
+ * @param value number, or decimal string as sent by the API ("50.00").
+ * @returns e.g. "50", "33,33".
+ * @throws Error for a value that is not a number (fail loudly).
+ */
+export function formatPercent(value: number | string): string {
+  const number = typeof value === "number" ? value : value.trim() === "" ? Number.NaN : Number(value);
+  if (!Number.isFinite(number)) throw new Error(`formatPercent: not a number: ${String(value)}`);
+  return String(Number(number.toFixed(2))).replace(".", ",");
+}

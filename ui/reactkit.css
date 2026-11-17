@@ -226,3 +226,19 @@
 .rk-impact dt { color: var(--color-muted, #666); }
 .rk-impact dd { margin: 0; font-weight: 600; font-variant-numeric: tabular-nums; }
 .rk-confirmation-left { font-weight: 600; color: var(--color-danger, #b91c1c); }
+
+/* ExplainedSection --------------------------------------------------------- */
+.rk-explained {
+  display: flex; flex-direction: column; gap: var(--space, 1rem);
+  background: var(--color-surface, #fff); border: 1px solid var(--color-border, #ddd);
+  border-radius: calc(var(--radius, 6px) + 2px); padding: 1.25rem; min-width: 0;
+}
+.rk-explained-header { display: flex; flex-direction: column; gap: 0.25rem; }
+.rk-explained-header h2 { margin: 0; }
+.rk-explained-description { margin: 0; color: var(--color-muted, #666); }
+.rk-explained-reference { margin: 0; font-weight: 600; }
+.rk-explained-how { border-left: 3px solid var(--color-border, #ddd); padding-left: 0.75rem; }
+.rk-explained-how > summary { cursor: pointer; min-height: 32px; color: var(--color-primary, #1d4ed8); font-weight: 600; }
+.rk-explained-how-body { color: var(--color-muted, #666); font-size: 0.95rem; }
+.rk-explained-how-body ul { margin: 0.25rem 0; padding-left: 1.25rem; }
+.rk-explained-empty { margin: 0; color: var(--color-muted, #666); font-style: italic; }

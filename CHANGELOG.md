@@ -1,5 +1,16 @@
 # reactkit changelog
 
+## 0.10.0 — 2026-11-17
+- app: `periods` — `periodRange(kind, day)` (month, quarter, half year,
+  year, two years containing a day, or no limit), `shiftPeriod(kind, day,
+  steps)` (the arrows back/forward), `isPeriodKind`, `PERIOD_KINDS`.
+- app: `formatPercent(value)` ("50.00" → "50", "33.33" → "33,33").
+- app: `useQueryParams()` — query parameters as page state; every update starts
+  from the current URL, so two quick changes never undo each other.
+- ui: `SelectField.emptyLabel` may be `null`: no empty option (a choice is required).
+- ui: `ExplainedSection` (title, what it shows, period or date always
+  visible, collapsible "how it is computed", empty state).
+
 ## 0.9.0 — 2026-11-17
 - ui: `Badge` kind `caution` (milder than `warning`, e.g. yellow next to
   orange), with the theme tokens `--color-caution` / `--color-caution-bg`.
