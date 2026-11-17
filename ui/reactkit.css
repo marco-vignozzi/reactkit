@@ -140,13 +140,14 @@
 }
 
 /* LinkTabs (0.12.0) ------------------------------------------------------- */
-.rk-link-tabs { display: flex; gap: 0.25rem; overflow-x: auto; border-bottom: 1px solid var(--color-border, #ddd); }
+.rk-link-tabs { display: flex; flex-wrap: wrap; gap: 0 0.25rem; border-bottom: 1px solid var(--color-border, #ddd); }
 .rk-link-tabs a {
   display: inline-flex; align-items: center; min-height: 44px; padding: 0 1rem; white-space: nowrap;
   color: var(--color-muted, #666); font-weight: 600; text-decoration: none;
 }
 .rk-link-tabs a:hover { color: var(--color-text, #222); }
 .rk-link-tabs a[aria-current="page"] { color: var(--color-primary, #1d4ed8); box-shadow: inset 0 -3px 0 currentColor; }
+@media (max-width: 480px) { .rk-link-tabs a { padding: 0 0.6rem; } }
 
 /* DataTable --------------------------------------------------------------- */
 .rk-table { display: flex; flex-direction: column; gap: 0.75rem; }

@@ -1,5 +1,9 @@
 # reactkit changelog
 
+## 0.12.1 — 2026-11-17
+- ui: `LinkTabs` — tabs wrap onto a new line instead of scrolling, so
+  every tab stays visible on narrow screens.
+
 ## 0.12.0 — 2026-11-17
 - ui: `NavBar` — `NavItem.secondary` and the `more` prop (`{label, icon?}`):
   secondary items stay in the bar on wide screens and move into a "more"
