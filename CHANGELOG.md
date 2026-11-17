@@ -1,5 +1,20 @@
 # reactkit changelog
 
+## 0.12.0 — 2026-11-17
+- ui: `NavBar` — `NavItem.secondary` and the `more` prop (`{label, icon?}`):
+  secondary items stay in the bar on wide screens and move into a "more"
+  pop-up list below 700px; secondary items without `more` throw.
+- ui: `DataTable` — columns told apart (light tint on every other column,
+  thin line between columns; on mobile cards a dashed line between values);
+  headers wrap instead of being cut.
+- ui: `LinkTabs` — the pages of a section as tab links (`NavLink`).
+- ui: `Pagination` (+ `PAGE_SIZES`, `pageCount`) — page controls with the
+  rows-per-page choice, for lists paged in the browser or by the server.
+- ui: `DataTable` pages its rows: `pageSize = 25` (`null` = all), `pageSizes`;
+  controls only when the rows do not fit in the smallest size.
+- ui: `UiLabels` gains `pages`, `previousPage`, `nextPage`, `pageSize`,
+  `rangeOf(first, last, total)` (breaking: every provider must pass them).
+
 ## 0.11.0 — 2026-11-17
 - app: `ImpactValue` also `null` and a flat object (`ImpactScalar` values), e.g. the
   row a deletion keeps `{id, date, amount}`; `pendingFrom` accepts them (it threw).

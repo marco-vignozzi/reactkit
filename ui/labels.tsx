@@ -29,6 +29,16 @@ export interface UiLabels {
   confirmAgain: string;
   /** "N more confirmations needed" (ConfirmationDialog). */
   confirmationsLeft: (count: number) => string;
+  /** Accessible name of the page controls (Pagination, 0.12.0). */
+  pages: string;
+  /** Previous page button (Pagination). */
+  previousPage: string;
+  /** Next page button (Pagination). */
+  nextPage: string;
+  /** Label of the rows-per-page choice (Pagination). */
+  pageSize: string;
+  /** "1–25 of 120" (Pagination). */
+  rangeOf: (first: number, last: number, total: number) => string;
 }
 
 const UiLabelsContext = createContext<UiLabels | null>(null);

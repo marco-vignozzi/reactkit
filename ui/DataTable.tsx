@@ -3,10 +3,17 @@
  * selection and per-row actions. On screens narrower than 700px every row
  * becomes a card of "label: value" lines (pure CSS on the same markup, so
  * nothing is rendered twice and nothing scrolls sideways).
+ *
+ * Pagination (0.12.0): filter and sort apply to every row, then one page is
+ * shown (default 25 rows, choice 10 / 25 / 50 / 100); the controls appear
+ * only when the rows do not fit in the smallest page size. Filtering,
+ * sorting or a new page size goes back to the first page. "Select all"
+ * acts on the rows of the page shown.
  */
-import { useMemo, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 
 import { useUiLabels } from "./labels";
+import { PAGE_SIZES, pageCount, Pagination } from "./Pagination";
 
 /** Key of a row (rowKey). */
 export type RowKey = string | number;
@@ -59,6 +66,10 @@ export interface DataTableProps<T> {
   empty: ReactNode;
   /** Accessible name of the table. */
   caption: string;
+  /** Rows per page at first (default 25); `null` = no pagination (every row). */
+  pageSize?: number | null;
+  /** Page sizes the user may choose (default 10, 25, 50, 100). */
+  pageSizes?: readonly number[];
 }
 
 const collator = new Intl.Collator(undefined, { numeric: true, sensitivity: "base" });
@@ -90,10 +101,13 @@ function plainValue<T>(row: T, key: string): string | number {
 /** Renders the table (and its cards on mobile). */
 export function DataTable<T>({
   rows, columns, rowKey, actions, filterable = true, initialSort, selected, onSelectionChange, empty, caption,
+  pageSize: initialPageSize = 25, pageSizes = PAGE_SIZES,
 }: DataTableProps<T>) {
   const labels = useUiLabels();
   const [sort, setSort] = useState<SortState | null>(initialSort ?? null);
   const [filter, setFilter] = useState("");
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState<number | null>(initialPageSize);
   const selectable = selected !== undefined;
 
   const visible = useMemo(() => {
@@ -116,6 +130,14 @@ export function DataTable<T>({
     return result;
   }, [rows, columns, filter, sort]);
 
+  // Back to the first page when the filter or the sort changes.
+  useEffect(() => setPage(1), [filter, sort]);
+  const pages = pageSize === null ? 1 : pageCount(visible.length, pageSize);
+  // Fewer rows than before (a deletion, a reload): never past the last page.
+  const current = Math.min(page, pages);
+  const shown = pageSize === null ? visible : visible.slice((current - 1) * pageSize, current * pageSize);
+  const paged = pageSize !== null && visible.length > Math.min(...pageSizes);
+
   /** Sorts by a column: first ascending, then toggles the direction. */
   function toggleSort(key: string) {
     setSort((current) =>
@@ -123,10 +145,10 @@ export function DataTable<T>({
     );
   }
 
-  const visibleKeys = visible.map(rowKey);
+  const visibleKeys = shown.map(rowKey);
   const allSelected = selectable && visibleKeys.length > 0 && visibleKeys.every((key) => selected.has(key));
 
-  /** Selects or deselects every visible row (others stay as they are). */
+  /** Selects or deselects every row of the page shown (others stay as they are). */
   function toggleAll() {
     const next = new Set(selected);
     for (const key of visibleKeys) {
@@ -191,7 +213,7 @@ export function DataTable<T>({
             </tr>
           </thead>
           <tbody>
-            {visible.map((row) => {
+            {shown.map((row) => {
               const key = rowKey(row);
               const isSelected = selectable && selected.has(key);
               return (
@@ -218,6 +240,19 @@ export function DataTable<T>({
         </table>
         {visible.length === 0 && <p className="rk-table-empty">{labels.noResults}</p>}
       </div>
+      {paged && pageSize !== null && (
+        <Pagination
+          page={current}
+          pageSize={pageSize}
+          total={visible.length}
+          onPage={setPage}
+          onPageSize={(size) => {
+            setPageSize(size);
+            setPage(1);
+          }}
+          pageSizes={pageSizes}
+        />
+      )}
     </div>
   );
 }
