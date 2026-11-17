@@ -49,3 +49,26 @@ export function formatDate(iso: string | null | undefined, empty = "—"): strin
   const pad = (n: number) => String(n).padStart(2, "0");
   return `${pad(moment.getDate())}/${pad(moment.getMonth() + 1)}/${moment.getFullYear()}`;
 }
+
+/**
+ * A decimal typed by the user, in the form an API expects: trimmed, the
+ * decimal comma turned into a point ("700,5" -> "700.5"). It does not
+ * check that the result is a number: the server does.
+ *
+ * @param typed the text of the field.
+ * @returns the text for the API.
+ */
+export function decimalInput(typed: string): string {
+  return typed.trim().replace(",", ".");
+}
+
+/**
+ * Today as an ISO date ("2026-03-15") in the browser's time zone (not UTC:
+ * near midnight toISOString() alone would give the wrong day).
+ *
+ * @returns the date.
+ */
+export function todayIso(): string {
+  const now = new Date();
+  return new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+}

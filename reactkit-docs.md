@@ -146,7 +146,20 @@ if (result.status === "done") toast.success("Deleted.");
 | Name | Description | Status |
 |---|---|---|
 | `formatAmount(value: number \| string, locale = "it-IT"): string` | two decimals, thousands separators always (`"1.100,00"`; Intl's Italian default would give `"1100,00"`); accepts the API's decimal strings; throws for a value that is not a number (also `""`) | ✅ |
+| `decimalInput(typed): string` | a decimal typed by the user for the API: trimmed, comma → point (`"700,5"` → `"700.5"`); no check that it is a number | ✅ |
+| `todayIso(): string` | today as `"2026-03-15"` in the browser's time zone | ✅ |
 | `formatDate(iso, empty = "—"): string` | `"2026-03-15"` → `"15/03/2026"`; a date-time with offset → its day in the browser's time zone; `null` / `""` → `empty`; throws for a value that is not ISO | ✅ |
+
+### `cooldown` — buttons disabled for a while
+
+| Name | Description | Status |
+|---|---|---|
+| `useCooldowns<K>(durationMs): Cooldowns<K>` | one timer per key: `start(key)` begins it, `cooling(key)` tells whether it is running; the component re-renders when one ends. Repeats a server-side limit for comfort only | ✅ |
+
+```tsx
+const cooldowns = useCooldowns<number>(60_000);
+<button disabled={cooldowns.cooling(order.id)} onClick={() => { send(order); cooldowns.start(order.id); }}>Send</button>
+```
 
 ## `ui/`
 
@@ -161,7 +174,7 @@ two attributes on any element (usually `<html>`, see `app/theme`):
 `--color-bg`, `--color-surface`, `--color-surface-2`, `--color-text`,
 `--color-muted`, `--color-border`, `--color-primary`,
 `--color-primary-hover`, `--color-on-primary`, `--color-danger(-bg)`,
-`--color-success(-bg)`, `--color-warning(-bg)`, `--color-info-bg`,
+`--color-success(-bg)`, `--color-warning(-bg)`, `--color-caution(-bg)` (milder than warning), `--color-info-bg`,
 `--radius`, `--shadow`, `--font-heading`, `--heading-weight`,
 `--label-transform`, `--label-spacing`, `--space`.
 
@@ -179,9 +192,9 @@ fallbacks.
 | `Column<T>` | `key`, `label`, `render?(row)`, `sortValue?(row)` (omitted = not sortable; numbers numerically, strings naturally, empty values last), `filterValue?(row)` (default `sortValue`, else `row[key]`), `align?: "end"` (numbers), `primary?` (title of the card) | — | ✅ |
 | `ConfirmDialog` | `open`, `title`, `children` (what will happen), `confirmLabel`, `danger?`, `busy?`, `onConfirm`, `onCancel` | native `<dialog>` (modal, focus kept inside): closes with the cancel button, Esc or a click on the backdrop (not while `busy`) | ✅ |
 | `ToastProvider` + `useToast()` | `duration = 4000` | `success`, `info` disappear after `duration`; `error` stays until closed (`role="alert"`); live region at the bottom, above the mobile nav bar | ✅ |
-| `SelectField` | `label`, `value`, `onChange(value)`, `children` (the `<option>`s), `errors = []`, `disabled` | label + select with an empty first option "—" + errors, like `FormField` (`aria-invalid`, `aria-describedby`) | ✅ |
+| `SelectField` | `label`, `value`, `onChange(value)`, `children` (the `<option>`s), `errors = []`, `disabled`, `emptyLabel = "—"` | label + select with an empty first option (`emptyLabel`, e.g. "All" in a filter) + errors, like `FormField` (`aria-invalid`, `aria-describedby`) | ✅ |
 | `ConfirmationDialog` | `flow` (from `useConfirmedAction`), `title`, `impactLabel(key)`, `impactValue?(key, value)` (default: the value as it is), `danger = true`, `children?` (note under the server's message) | the server's message, the caller's note, the impact (rows with a count > 0 or a non-empty string), "N more confirmations" when more than one is needed; button "confirm" the first time, "confirm again" after | ✅ |
-| `Badge` | `kind?: "neutral" \| "success" \| "warning" \| "danger"`, `children` | small status label | ✅ |
+| `Badge` | `kind?: "neutral" \| "success" \| "caution" \| "warning" \| "danger"`, `children` | small status label | ✅ |
 | `UiLabelsProvider` + `useUiLabels()` | `labels: UiLabels` = `cancel`, `close`, `filter`, `noResults`, `selectAll`, `selectRow`, `actions`, `confirm`, `confirmAgain`, `confirmationsLeft(count)` | texts the components use without a prop; required by `DataTable`, `ConfirmDialog`, `ToastProvider` (missing provider → error) | ✅ |
 | `ChoiceGroup<V>` | `legend`, `options: { value, label }[]`, `value`, `onChange(value)`, `disabled?` | one choice among a few, as a segmented control made of radio buttons (keyboard and screen readers as a radio group) | ✅ |
 

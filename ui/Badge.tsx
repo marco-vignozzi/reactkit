@@ -5,8 +5,8 @@ import type { ReactNode } from "react";
 
 /** Props of Badge. */
 export interface BadgeProps {
-  /** Color: neutral (default), success, warning, danger. */
-  kind?: "neutral" | "success" | "warning" | "danger";
+  /** Color: neutral (default), success, caution (milder than warning), warning, danger. */
+  kind?: "neutral" | "success" | "caution" | "warning" | "danger";
   children: ReactNode;
 }
 

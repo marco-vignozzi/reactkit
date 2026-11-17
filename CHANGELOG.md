@@ -1,5 +1,13 @@
 # reactkit changelog
 
+## 0.9.0 — 2026-11-17
+- ui: `Badge` kind `caution` (milder than `warning`, e.g. yellow next to
+  orange), with the theme tokens `--color-caution` / `--color-caution-bg`.
+- app: `decimalInput(typed)` (decimal comma → point),
+  `todayIso()` (today in the browser's time zone) and
+  `useCooldowns(durationMs)` (buttons disabled for a while, one timer per key).
+- ui: `SelectField.emptyLabel` (text of the empty first option, default "—").
+
 ## 0.8.0 — 2026-11-17
 - ui: `ConfirmationDialog` accepts `children`: a note of the caller shown
   under the server's message (e.g. what the operation keeps).

@@ -11,15 +11,17 @@ export interface SelectFieldProps {
   value: string;
   /** Called with the new value. */
   onChange: (value: string) => void;
-  /** The <option> elements; an empty first option ("—") is added. */
+  /** The <option> elements; an empty first option (`emptyLabel`) is added. */
   children: ReactNode;
   /** Error messages of the field; empty = none. */
   errors?: string[];
   disabled?: boolean;
+  /** Text of the empty first option, e.g. "All" for a filter; default "—". */
+  emptyLabel?: string;
 }
 
 /** Renders label + select + errors (aria-invalid / aria-describedby when there are errors). */
-export function SelectField({ label, value, onChange, children, errors = [], disabled }: SelectFieldProps) {
+export function SelectField({ label, value, onChange, children, errors = [], disabled, emptyLabel = "—" }: SelectFieldProps) {
   const id = useId();
   const errorId = `${id}-errors`;
   const invalid = errors.length > 0;
@@ -34,7 +36,7 @@ export function SelectField({ label, value, onChange, children, errors = [], dis
         aria-describedby={invalid ? errorId : undefined}
         onChange={(event) => onChange(event.target.value)}
       >
-        <option value="">—</option>
+        <option value="">{emptyLabel}</option>
         {children}
       </select>
       {invalid && (
