@@ -205,7 +205,7 @@ const cooldowns = useCooldowns<number>(60_000);
 
 ## `ui/`
 
-Import `themes.css` then `reactkit.css`. Breakpoint: 700px.
+Import `themes.css` then `reactkit.css`. Breakpoint: 700px. On touch screens (`pointer: coarse`, 0.16.0) every tap target is at least 44 px high (small buttons, sort buttons, table filter, page-size select, `<summary>`), table checkboxes 24 px; form inputs and selects never exceed their container.
 
 **Themes (`themes.css`).** Three styles, each light and dark, selected by
 two attributes on any element (usually `<html>`, see `app/theme`):

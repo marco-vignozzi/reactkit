@@ -63,13 +63,13 @@
 }
 
 /* FormField --------------------------------------------------------------- */
-.rk-field { display: flex; flex-direction: column; gap: 0.3rem; }
+.rk-field { display: flex; flex-direction: column; gap: 0.3rem; min-width: 0; }
 .rk-field label {
   font-weight: 600; font-size: 0.85rem; color: var(--color-muted);
   text-transform: var(--label-transform, none); letter-spacing: var(--label-spacing, 0);
 }
 .rk-field input, .rk-field select {
-  min-height: 44px; padding: 0.5rem 0.75rem; font: inherit; color: var(--color-text, #222);
+  max-width: 100%; min-height: 44px; padding: 0.5rem 0.75rem; font: inherit; color: var(--color-text, #222);
   background: var(--color-bg, #fff); border: 1px solid var(--color-border, #ccc); border-radius: var(--radius, 6px);
 }
 .rk-field input[aria-invalid="true"], .rk-field select[aria-invalid="true"] { border-color: var(--color-danger, #b91c1c); }
@@ -316,4 +316,14 @@
 @media (max-width: 639px) {
   .rk-month__grid { display: none; }
   .rk-month__list { display: flex; flex-direction: column; gap: 0.5rem; }
+}
+
+/* Touch screens (0.16.0): every tap target at least 44 px high (WCAG 2.5.5).
+   Only with a coarse pointer, so mouse layouts keep the compact sizes. */
+@media (pointer: coarse) {
+  .rk-button--small, .rk-pagination-size select, .rk-table-filter { min-height: 44px; }
+  .rk-sort { min-height: 44px; }
+  .rk-table-check input { width: 1.5rem; height: 1.5rem; }
+  .rk-table tbody .rk-table-check { top: 0.5rem; right: 0.75rem; }
+  summary { min-height: 44px; padding-block: 0.65rem; }
 }

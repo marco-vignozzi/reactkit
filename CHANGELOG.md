@@ -1,5 +1,12 @@
 # reactkit changelog
 
+## 0.16.0 — 2026-11-18
+- ui: on touch screens (`pointer: coarse`) small buttons, sort buttons, the table filter,
+  the page-size select and `<summary>` are at least 44 px high; table
+  checkboxes are 24 px. `FormField` inputs and selects never get wider
+  than their container (a select with long options caused horizontal
+  scroll on phones).
+
 ## 0.15.0 — 2026-11-18
 - app: `missingFields(values, names)` — the required fields still blank;
   a multi-step form keeps "Next" disabled while the current step has one.
