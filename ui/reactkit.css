@@ -89,6 +89,39 @@
 @keyframes rk-spin { to { transform: rotate(360deg); } }
 @media (prefers-reduced-motion: reduce) { .rk-spinner { animation-duration: 2.4s; } }
 
+/* BusyArea ---------------------------------------------------------------- */
+/* Before the data arrives: a skeleton of softly pulsing bars on the surface
+   colour, the shape of a block of text (no spinner, no empty gap). */
+.rk-skeleton {
+  display: flex; flex-direction: column; gap: 0.8rem; padding: 1.1rem 1.2rem;
+  border: 1px solid var(--color-border, #ddd); border-radius: var(--radius, 6px);
+  background: var(--color-surface, #fff);
+}
+.rk-skeleton-bar {
+  display: block; height: 0.8rem; border-radius: 999px;
+  background: linear-gradient(90deg,
+    var(--color-surface-2, #eee) 25%,
+    color-mix(in srgb, var(--color-surface-2, #eee) 45%, var(--color-surface, #fff)) 50%,
+    var(--color-surface-2, #eee) 75%);
+  background-size: 200% 100%;
+  animation: rk-skeleton-wave 1.4s ease-in-out infinite;
+}
+.rk-skeleton-bar:first-child { width: 45%; }
+.rk-skeleton-bar--short { width: 70%; }
+@keyframes rk-skeleton-wave { from { background-position: 100% 0; } to { background-position: -100% 0; } }
+@media (prefers-reduced-motion: reduce) { .rk-skeleton-bar { animation: none; } }
+/* Reloading: the content stays; a semi-opaque veil with a spinner covers it
+   after 150 ms, so fast answers do not flash. */
+.rk-busy { position: relative; }
+.rk-busy-veil {
+  position: absolute; inset: 0; z-index: 1;
+  display: flex; align-items: flex-start; justify-content: center; padding-top: min(4rem, 30%);
+  border-radius: var(--radius, 6px);
+  background: color-mix(in srgb, var(--color-bg, #fff) 65%, transparent);
+  opacity: 0; animation: rk-busy-in 0.2s ease 0.15s forwards;
+}
+@keyframes rk-busy-in { to { opacity: 1; } }
+
 /* ChoiceGroup ------------------------------------------------------------- */
 .rk-choice { display: flex; flex-direction: column; gap: 0.4rem; margin: 0; padding: 0; border: 0; }
 .rk-choice legend {
@@ -151,6 +184,7 @@
 
 /* DataTable --------------------------------------------------------------- */
 .rk-table { display: flex; flex-direction: column; gap: 0.75rem; }
+
 .rk-table-filter {
   max-width: 20rem; min-height: 40px; padding: 0.4rem 0.75rem; font: inherit; color: var(--color-text, #222);
   background: var(--color-surface, #fff); border: 1px solid var(--color-border, #ccc); border-radius: var(--radius, 6px);
@@ -281,12 +315,7 @@
 }
 .rk-explained-header { display: flex; flex-direction: column; gap: 0.25rem; }
 .rk-explained-header h2 { margin: 0; }
-.rk-explained-description { margin: 0; color: var(--color-muted, #666); }
 .rk-explained-reference { margin: 0; font-weight: 600; }
-.rk-explained-how { border-left: 3px solid var(--color-border, #ddd); padding-left: 0.75rem; }
-.rk-explained-how > summary { cursor: pointer; min-height: 32px; color: var(--color-primary, #1d4ed8); font-weight: 600; }
-.rk-explained-how-body { color: var(--color-muted, #666); font-size: 0.95rem; }
-.rk-explained-how-body ul { margin: 0.25rem 0; padding-left: 1.25rem; }
 .rk-explained-empty { margin: 0; color: var(--color-muted, #666); font-style: italic; }
 
 /* MonthGrid (0.13.0) ------------------------------------------------------ */
@@ -327,3 +356,48 @@
   .rk-table tbody .rk-table-check { top: 0.5rem; right: 0.75rem; }
   summary { min-height: 44px; padding-block: 0.65rem; }
 }
+
+/* HelpTip ----------------------------------------------------------------- */
+/* A "?" button next to a title or label; the panel opens on click/tap. */
+.rk-help { position: relative; display: inline-flex; vertical-align: middle; }
+.rk-help-button {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 1.75rem; height: 1.75rem; padding: 0; border: 0; border-radius: 50%;
+  background: transparent; color: var(--color-muted, #666); cursor: pointer;
+  font: inherit; line-height: 1;
+}
+.rk-help-button:hover, .rk-help-button[aria-expanded="true"] { color: var(--color-primary, #1d4ed8); background: var(--color-surface-2, #f4f4f4); }
+.rk-help-button:focus-visible { outline: 2px solid var(--color-primary, #1d4ed8); outline-offset: 2px; }
+/* Touch: 44 px target, but it takes only the icon's room in the line. */
+@media (pointer: coarse) { .rk-help-button { width: 2.75rem; height: 2.75rem; margin: -0.5rem; } }
+.rk-help-panel {
+  position: absolute; z-index: 20; top: calc(100% + 0.4rem); left: -0.5rem;
+  width: max-content; max-width: min(24rem, calc(100vw - 2rem));
+  display: flex; flex-direction: column; gap: 0.6rem; padding: 0.85rem 1rem;
+  border: 1px solid var(--color-border, #ddd); border-radius: var(--radius, 6px);
+  background: var(--color-surface, #fff); color: var(--color-text, #222);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.14);
+  font: 400 0.9rem/1.45 system-ui, sans-serif; text-align: left; text-transform: none; letter-spacing: 0;
+  white-space: normal;
+}
+.rk-help-panel[hidden] { display: none; }
+.rk-help-body { display: block; }
+.rk-help-body ul { margin: 0; padding-left: 1.1rem; }
+.rk-help-body p { margin: 0 0 0.5rem; }
+.rk-help-close {
+  align-self: flex-end; padding: 0.3rem 0.7rem; border: 1px solid var(--color-border, #ddd);
+  border-radius: var(--radius, 6px); background: var(--color-surface-2, #f4f4f4); color: inherit;
+  font: inherit; font-size: 0.85rem; cursor: pointer;
+}
+/* Phones: a panel across the bottom of the screen, above the tab bar. */
+@media (max-width: 640px) {
+  .rk-help-panel {
+    position: fixed; top: auto; left: 0.75rem; right: 0.75rem; bottom: calc(4.5rem + env(safe-area-inset-bottom, 0px));
+    transform: none; width: auto; max-width: none; max-height: 60vh; overflow-y: auto;
+  }
+}
+/* A heading with a HelpTip: the icon flows right after the last word
+   (never alone on a new line). */
+.rk-title-help .rk-help { margin-left: 0.3rem; vertical-align: -0.15em; white-space: nowrap; }
+/* Field label with a HelpTip: same look as the plain label. */
+.rk-field-label-help { display: flex; align-items: center; gap: 0.2rem; }

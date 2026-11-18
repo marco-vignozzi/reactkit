@@ -1,5 +1,29 @@
 # reactkit changelog
 
+## 0.17.0 — 2026-11-18
+- app: `useSettled(states)` — combines several `useApi` loads of a page:
+  new data only when all have settled (one update instead of one per
+  answer), the previous snapshot meanwhile, `busy` while any loads.
+- ui: `BusyArea` — before the first load a skeleton (softly pulsing bars)
+  of fixed height (never an empty gap); while reloading the content stays in
+  place under a semi-opaque veil with a spinner (after 150 ms),
+  `aria-busy`. New `UiLabels.loading` (its spinner text).
+- ui: `DataTable` prop `busy` — while reloading the table keeps its rows
+  and size inside a `BusyArea`.
+- ui: `LoadGate` + app: `useLoadGate`, `useGateClosed`, `LoadGateContext` —
+  the page is drawn at once; its `BusyArea`s show a skeleton until no load
+  inside has been in progress for 50 ms, then all the data appears
+  together; `useApi` registers by itself. Never closes again (reloads use
+  the `BusyArea` veil).
+- ui: `HelpTip` — "?" button opening an explanation on click/tap (Escape
+  or a click elsewhere closes; a bottom panel on phones). New
+  `UiLabels.help(topic)`, CSS class `rk-title-help` for headings.
+- ui: `FormField` and `SelectField` prop `help` (HelpTip next to the label).
+- ui (breaking): `ExplainedSection` shows `description` and `explanation`
+  in a HelpTip next to the title (no more visible sentence and
+  collapsible box); `title` is now a string.
+- fix: `version.ts` was empty since 0.16.0 (deleted by mistake): restored.
+
 ## 0.16.0 — 2026-11-18
 - ui: on touch screens (`pointer: coarse`) small buttons, sort buttons, the table filter,
   the page-size select and `<summary>` are at least 44 px high; table

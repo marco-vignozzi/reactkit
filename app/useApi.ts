@@ -3,6 +3,8 @@
  */
 import { useCallback, useEffect, useRef, useState, type DependencyList } from "react";
 
+import { useLoadGate } from "./loadGate";
+
 /** State returned by useApi. */
 export interface ApiState<T> {
   /** Last loaded data; kept while reloading, null before the first load. */
@@ -17,6 +19,9 @@ export interface ApiState<T> {
 
 /**
  * Loads data with `fn` on mount and whenever `deps` change.
+ *
+ * Inside a LoadGate that is still closed, a call in progress holds the
+ * page (an error counts as settled); after the gate opens, reloads never do.
  *
  * Answers of outdated calls (deps changed or component unmounted
  * meanwhile) are ignored, so a slow old answer never overwrites a newer one.
@@ -57,6 +62,11 @@ export function useApi<T>(fn: () => Promise<T>, deps: DependencyList = []): ApiS
       current = false;
     };
   }, [...deps, attempt]); // deps are the caller's: spread on purpose
+
+  // While the page's LoadGate is closed every call in progress holds it
+  // (also one that starts after a first placeholder answer); once open,
+  // reloads show a BusyArea veil instead.
+  useLoadGate(loading);
 
   const reload = useCallback(() => setAttempt((n) => n + 1), []);
   return { data, error, loading, reload };

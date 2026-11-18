@@ -3,10 +3,14 @@
  */
 import { useId, type ReactNode } from "react";
 
+import { HelpTip } from "./HelpTip";
+
 /** Props of SelectField. */
 export interface SelectFieldProps {
   /** Visible label. */
   label: string;
+  /** Explanation of the field, in a HelpTip next to the label (0.17.0). */
+  help?: ReactNode;
   /** Selected value ("" = none). */
   value: string;
   /** Called with the new value. */
@@ -21,13 +25,20 @@ export interface SelectFieldProps {
 }
 
 /** Renders label + select + errors (aria-invalid / aria-describedby when there are errors). */
-export function SelectField({ label, value, onChange, children, errors = [], disabled, emptyLabel = "—" }: SelectFieldProps) {
+export function SelectField({ label, value, onChange, children, errors = [], disabled, emptyLabel = "—", help }: SelectFieldProps) {
   const id = useId();
   const errorId = `${id}-errors`;
   const invalid = errors.length > 0;
   return (
     <div className="rk-field">
-      <label htmlFor={id}>{label}</label>
+      {help === undefined ? (
+        <label htmlFor={id}>{label}</label>
+      ) : (
+        <span className="rk-field-label-help">
+          <label htmlFor={id}>{label}</label>
+          <HelpTip topic={label}>{help}</HelpTip>
+        </span>
+      )}
       <select
         id={id}
         value={value}

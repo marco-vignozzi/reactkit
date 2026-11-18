@@ -37,6 +37,10 @@ export interface UiLabels {
   nextPage: string;
   /** Label of the rows-per-page choice (Pagination). */
   pageSize: string;
+  /** Accessible name of a HelpTip button about `topic` (0.17.0). */
+  help: (topic: string) => string;
+  /** Accessible text of the spinner of a loading area (BusyArea, DataTable busy; 0.17.0). */
+  loading: string;
   /** "1–25 of 120" (Pagination). */
   rangeOf: (first: number, last: number, total: number) => string;
 }

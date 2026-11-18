@@ -1,20 +1,22 @@
 /**
- * A section of a report that explains itself: title, a sentence saying
- * what it shows, the period or date it refers to (always visible), a
- * collapsible "how it is computed" box and an empty state. Meant for
- * pages of figures that a reader must understand without help.
+ * A section of a report that explains itself: title with a HelpTip (what
+ * it shows and how it is computed, on request), the period or date it
+ * refers to (always visible) and an empty state. Meant for pages of
+ * figures that a reader must understand without help.
  */
 import { useId, type ReactNode } from "react";
 
+import { HelpTip } from "./HelpTip";
+
 /** Props of ExplainedSection. */
 export interface ExplainedSectionProps {
-  /** Heading of the section (an h2). */
-  title: ReactNode;
-  /** One sentence under the title: what the section shows. */
+  /** Heading of the section (an h2); also the HelpTip's topic. */
+  title: string;
+  /** One sentence: what the section shows (first line of the HelpTip). */
   description: ReactNode;
   /** The period or reference date, written out (e.g. "From 1/1/2026 to 31/12/2026"). */
   reference: ReactNode;
-  /** Label of the collapsible explanation (e.g. "How it is computed"). */
+  /** Heading of the explanation inside the HelpTip (e.g. "How it is computed"). */
   explanationLabel: ReactNode;
   /** Content of the explanation: what is included, what is left out and why. */
   explanation: ReactNode;
@@ -36,15 +38,17 @@ export function ExplainedSection({
   return (
     <section className="rk-explained" aria-labelledby={headingId}>
       <header className="rk-explained-header">
-        <h2 id={headingId}>{title}</h2>
-        <p className="rk-explained-description">{description}</p>
+        <h2 id={headingId} className="rk-title-help">
+          {title}
+          <HelpTip topic={title}>
+            <p>{description}</p>
+            <strong>{explanationLabel}</strong>
+            {explanation}
+          </HelpTip>
+        </h2>
         <p className="rk-explained-reference">{reference}</p>
       </header>
       {controls}
-      <details className="rk-explained-how">
-        <summary>{explanationLabel}</summary>
-        <div className="rk-explained-how-body">{explanation}</div>
-      </details>
       {empty ? <p className="rk-explained-empty">{emptyText}</p> : children}
     </section>
   );

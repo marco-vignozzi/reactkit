@@ -12,6 +12,7 @@
  */
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 
+import { BusyArea } from "./BusyArea";
 import { useUiLabels } from "./labels";
 import { PAGE_SIZES, pageCount, Pagination } from "./Pagination";
 
@@ -70,6 +71,11 @@ export interface DataTableProps<T> {
   pageSize?: number | null;
   /** Page sizes the user may choose (default 10, 25, 50, 100). */
   pageSizes?: readonly number[];
+  /**
+   * True while the rows are being reloaded: the table stays where it is,
+   * showing the previous rows under the BusyArea veil (default false).
+   */
+  busy?: boolean;
 }
 
 const collator = new Intl.Collator(undefined, { numeric: true, sensitivity: "base" });
@@ -101,7 +107,7 @@ function plainValue<T>(row: T, key: string): string | number {
 /** Renders the table (and its cards on mobile). */
 export function DataTable<T>({
   rows, columns, rowKey, actions, filterable = true, initialSort, selected, onSelectionChange, empty, caption,
-  pageSize: initialPageSize = 25, pageSizes = PAGE_SIZES,
+  pageSize: initialPageSize = 25, pageSizes = PAGE_SIZES, busy = false,
 }: DataTableProps<T>) {
   const labels = useUiLabels();
   const [sort, setSort] = useState<SortState | null>(initialSort ?? null);
@@ -166,9 +172,10 @@ export function DataTable<T>({
     onSelectionChange?.(next);
   }
 
-  if (rows.length === 0) return <div className="rk-table-empty">{empty}</div>;
+  if (rows.length === 0) return <BusyArea busy={busy}><div className="rk-table-empty">{empty}</div></BusyArea>;
 
   return (
+    <BusyArea busy={busy}>
     <div className="rk-table">
       {filterable && (
         <input
@@ -254,5 +261,6 @@ export function DataTable<T>({
         />
       )}
     </div>
+    </BusyArea>
   );
 }
