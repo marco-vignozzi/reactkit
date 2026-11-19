@@ -24,6 +24,7 @@
     "react-router": "^8.5.1"
   },
   "scripts": {
+    "prepare": "npm run build",
     "build": "tsc -p tsconfig.build.json && node scripts/copy-css.mjs",
     "typecheck": "tsc --noEmit",
     "check": "node scripts/check-version.mjs && npm run typecheck && npm run build"
