@@ -7,9 +7,9 @@ versioned together (`version.ts`, `CHANGELOG.md`):
   guard). Never imports `ui/`.
 - `ui/` — presentational components. May import `app/`.
 
-Import with the alias: `import { createApiClient } from "@reactkit/app"`,
-`import { Layout } from "@reactkit/ui"`, styles once with
-`import "@reactkit/ui/reactkit.css"`.
+Import with the alias: `import { createApiClient } from "reactkit/app"`,
+`import { Layout } from "reactkit/ui"`, styles once with
+`import "reactkit/ui/reactkit.css"`.
 The kit contains no user-facing sentence: every visible text arrives
 through props or arguments. Status: ✅ implemented, 📝 planned.
 
