@@ -3,7 +3,7 @@
  */
 import { useId, type ReactNode } from "react";
 
-import { HelpTip } from "./HelpTip";
+import { HelpTip } from "./HelpTip.tsx";
 
 /** Props of SelectField. */
 export interface SelectFieldProps {

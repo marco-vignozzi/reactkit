@@ -8,7 +8,7 @@
  */
 import { useId } from "react";
 
-import { useUiLabels } from "./labels";
+import { useUiLabels } from "./labels.tsx";
 
 /** The page sizes offered by default. */
 export const PAGE_SIZES: readonly number[] = [10, 25, 50, 100];

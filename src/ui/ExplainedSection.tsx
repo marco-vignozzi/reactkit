@@ -6,7 +6,7 @@
  */
 import { useId, type ReactNode } from "react";
 
-import { HelpTip } from "./HelpTip";
+import { HelpTip } from "./HelpTip.tsx";
 
 /** Props of ExplainedSection. */
 export interface ExplainedSectionProps {

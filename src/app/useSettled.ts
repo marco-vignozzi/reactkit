@@ -3,7 +3,7 @@
  */
 import { useRef } from "react";
 
-import type { ApiState } from "./useApi";
+import type { ApiState } from "./useApi.ts";
 
 /** Data of each ApiState of a tuple, in the same order. */
 export type SettledData<S extends readonly ApiState<unknown>[]> = { [K in keyof S]: S[K] extends ApiState<infer T> ? T : never };

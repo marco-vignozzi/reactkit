@@ -3,7 +3,7 @@
  */
 import { useEffect, useId, useRef, useState, type ReactNode } from "react";
 
-import { useUiLabels } from "./labels";
+import { useUiLabels } from "./labels.tsx";
 
 /** Props of HelpTip. */
 export interface HelpTipProps {

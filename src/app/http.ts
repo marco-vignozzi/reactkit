@@ -6,7 +6,7 @@
  * methods, readable errors (ApiError) and a notification on 401.
  */
 
-import { readCookie } from "./cookies";
+import { readCookie } from "./cookies.ts";
 
 /** HTTP methods the client sends. */
 export type HttpMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";

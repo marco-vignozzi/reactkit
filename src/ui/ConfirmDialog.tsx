@@ -4,7 +4,7 @@
  */
 import { useEffect, useRef, type ReactNode } from "react";
 
-import { useUiLabels } from "./labels";
+import { useUiLabels } from "./labels.tsx";
 
 /** Props of ConfirmDialog. */
 export interface ConfirmDialogProps {

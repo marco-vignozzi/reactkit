@@ -3,7 +3,7 @@
  */
 import { useCallback, useEffect, useRef, useState, type DependencyList } from "react";
 
-import { useLoadGate } from "./loadGate";
+import { useLoadGate } from "./loadGate.ts";
 
 /** State returned by useApi. */
 export interface ApiState<T> {

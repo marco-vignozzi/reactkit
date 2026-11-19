@@ -5,7 +5,7 @@
  */
 import { createContext, useCallback, useContext, useMemo, useRef, useState, type ReactNode } from "react";
 
-import { useUiLabels } from "./labels";
+import { useUiLabels } from "./labels.tsx";
 
 /** Kind of a toast. */
 export type ToastKind = "success" | "error" | "info";

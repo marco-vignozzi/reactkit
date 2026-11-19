@@ -12,9 +12,9 @@
  */
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 
-import { BusyArea } from "./BusyArea";
-import { useUiLabels } from "./labels";
-import { PAGE_SIZES, pageCount, Pagination } from "./Pagination";
+import { BusyArea } from "./BusyArea.tsx";
+import { useUiLabels } from "./labels.tsx";
+import { PAGE_SIZES, pageCount, Pagination } from "./Pagination.tsx";
 
 /** Key of a row (rowKey). */
 export type RowKey = string | number;

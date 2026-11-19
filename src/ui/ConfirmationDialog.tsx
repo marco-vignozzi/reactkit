@@ -8,9 +8,9 @@
  */
 import type { ReactNode } from "react";
 
-import type { ConfirmationFlow, ImpactValue } from "../app/confirmation";
-import { ConfirmDialog } from "./ConfirmDialog";
-import { useUiLabels } from "./labels";
+import type { ConfirmationFlow, ImpactValue } from "../app/confirmation.ts";
+import { ConfirmDialog } from "./ConfirmDialog.tsx";
+import { useUiLabels } from "./labels.tsx";
 
 /** Props of ConfirmationDialog. */
 export interface ConfirmationDialogProps {

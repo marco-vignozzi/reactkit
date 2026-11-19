@@ -3,7 +3,7 @@
  */
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 
-import { LoadGateContext, type LoadGateContextValue } from "../app/loadGate";
+import { LoadGateContext, type LoadGateContextValue } from "../app/loadGate.ts";
 
 /** Props of LoadGate. */
 export interface LoadGateProps {

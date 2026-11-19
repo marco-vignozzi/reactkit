@@ -5,7 +5,7 @@
 import type { ReactNode } from "react";
 import { Navigate, Outlet, useLocation } from "react-router";
 
-import { useSession } from "./session";
+import { useSession } from "./session.tsx";
 
 /** Navigation state given to the login page: where to go back after login. */
 export interface FromState {

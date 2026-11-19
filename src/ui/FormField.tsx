@@ -4,7 +4,7 @@
 
 import { useId, type InputHTMLAttributes, type ReactNode } from "react";
 
-import { HelpTip } from "./HelpTip";
+import { HelpTip } from "./HelpTip.tsx";
 
 /** Props of FormField: those of <input>, plus label and errors. */
 export interface FormFieldProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "id"> {

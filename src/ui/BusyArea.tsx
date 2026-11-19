@@ -3,9 +3,9 @@
  */
 import type { ReactNode } from "react";
 
-import { useGateClosed } from "../app/loadGate";
-import { useUiLabels } from "./labels";
-import { Spinner } from "./Spinner";
+import { useGateClosed } from "../app/loadGate.ts";
+import { useUiLabels } from "./labels.tsx";
+import { Spinner } from "./Spinner.tsx";
 
 /** Props of BusyArea. */
 export interface BusyAreaProps {

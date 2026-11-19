@@ -13,7 +13,7 @@
  */
 import { useCallback, useRef, useState } from "react";
 
-import { ApiError } from "./http";
+import { ApiError } from "./http.ts";
 
 /** A flat value inside an impact row. */
 export type ImpactScalar = number | string | boolean | null;
