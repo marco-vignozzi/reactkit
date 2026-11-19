@@ -11,8 +11,6 @@ Modifiche per versione: [`CHANGELOG.md`](CHANGELOG.md).
 
 ## Installazione
 
-Il repository è privato. Serve un accesso GitHub con permesso di lettura.
-
 ```bash
 npm install github:marco-vignozzi/reactkit#v0.17.0
 npm install react@^19.3.1 react-router@^8.5.1   # peer dependencies
