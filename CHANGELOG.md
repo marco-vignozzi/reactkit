@@ -1,5 +1,8 @@
 # reactkit changelog
 
+## 0.18.2 — 2026-11-23
+- ui: NavBar, phone: the "more" items are stacked one per line (they inherited the row layout of the bar).
+
 ## 0.18.1 — 2026-11-23
 - ui: NavBar, phone layout: the "more" list is a sheet over the full width
   (it used to run off the screen and cut its labels).

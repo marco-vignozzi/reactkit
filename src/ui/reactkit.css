@@ -65,6 +65,8 @@
     bottom: calc(56px + env(safe-area-inset-bottom) + 0.5rem);
     min-width: 0; max-height: 60vh; overflow-y: auto;
   }
+  .rk-navbar .rk-navbar-more-list { display: flex; flex-direction: column; justify-content: flex-start; }
+  .rk-navbar .rk-navbar-more-list li { flex: none; }
   .rk-layout-main { padding-bottom: calc(56px + var(--space, 1rem) * 2 + env(safe-area-inset-bottom)); }
 }
 
