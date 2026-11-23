@@ -359,7 +359,7 @@
    Only with a coarse pointer, so mouse layouts keep the compact sizes. */
 @media (pointer: coarse) {
   .rk-button--small, .rk-pagination-size select, .rk-table-filter { min-height: 44px; }
-  .rk-sort { min-height: 44px; }
+  .rk-sort { min-height: 44px; margin-block: -0.5rem; }
   .rk-table-check input { width: 1.5rem; height: 1.5rem; }
   .rk-table tbody .rk-table-check { top: 0.5rem; right: 0.75rem; }
   summary { min-height: 44px; padding-block: 0.65rem; }

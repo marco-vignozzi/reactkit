@@ -1,5 +1,8 @@
 # reactkit changelog
 
+## 0.18.5 — 2026-11-23
+- ui: DataTable on touch screens: the 44px touch target of the sort buttons no longer adds space between the headers.
+
 ## 0.18.4 — 2026-11-23
 - ui: Legend: two columns on phones (the minimum column width was too wide).
 
