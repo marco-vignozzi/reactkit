@@ -236,9 +236,9 @@
   /* Every row becomes a card of "label: value" lines. */
   .rk-table-scroll { background: none; border: 0; box-shadow: none; overflow: visible; }
   .rk-table table, .rk-table tbody, .rk-table tr, .rk-table td { display: block; width: 100%; }
-  .rk-table thead tr { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
-  .rk-table thead { display: block; margin-bottom: 0.5rem; }
-  .rk-table thead th { background: none; border: 0; padding: 0.25rem 0.5rem 0.25rem 0; }
+  .rk-table thead tr { display: flex; align-items: center; gap: 0.15rem 0.35rem; flex-wrap: wrap; }
+  .rk-table thead { display: block; margin-bottom: 0.25rem; }
+  .rk-table thead th { background: none; border: 0; padding: 0.1rem 0.35rem 0.1rem 0; }
   .rk-table thead th:not([aria-sort]):not(:has(.rk-sort)):not(.rk-table-check) { display: none; }
   .rk-table tbody tr {
     position: relative; margin-bottom: 0.75rem; padding: 0.75rem 1rem;
@@ -422,15 +422,18 @@
   outline: 2px solid currentColor;
   outline-offset: 2px;
 }
+/* Legend: a compact grid, several icons per line where the width allows (0.18.3). */
 .rk-legend ul {
   list-style: none;
   margin: 0;
   padding: 0;
   display: grid;
-  gap: 0.25rem;
+  grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
+  gap: 0.1rem 0.75rem;
+  font-size: 0.85rem;
 }
 .rk-legend li {
   display: flex;
   align-items: center;
-  gap: 0.4rem;
+  gap: 0.3rem;
 }

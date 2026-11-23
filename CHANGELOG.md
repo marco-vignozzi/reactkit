@@ -1,5 +1,9 @@
 # reactkit changelog
 
+## 0.18.3 — 2026-11-23
+- ui: DataTable on phones: tighter spacing between the sort headers.
+- ui: Legend: compact, several entries per line where the width allows.
+
 ## 0.18.2 — 2026-11-23
 - ui: NavBar, phone: the "more" items are stacked one per line (they inherited the row layout of the bar).
 
