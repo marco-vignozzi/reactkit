@@ -1,5 +1,8 @@
 # reactkit changelog
 
+## 0.18.4 — 2026-11-23
+- ui: Legend: two columns on phones (the minimum column width was too wide).
+
 ## 0.18.3 — 2026-11-23
 - ui: DataTable on phones: tighter spacing between the sort headers.
 - ui: Legend: compact, several entries per line where the width allows.
