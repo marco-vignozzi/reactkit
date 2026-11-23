@@ -1,5 +1,12 @@
 # reactkit changelog
 
+## 0.18.0 — 2026-11-23
+- ui: `IconHint` — an icon with its meaning (`icon`, `label`): the meaning
+  shows on hover (native tooltip), is read by assistive technology and is
+  reachable by keyboard. CSS class `rk-icon-hint`.
+- ui: `Legend` — the legend of the icons of a page (`title`, `items` of
+  `{icon, label}`), one line per icon. CSS class `rk-legend`.
+
 ## 0.17.0 — 2026-11-18
 - app: `useSettled(states)` — combines several `useApi` loads of a page:
   new data only when all have settled (one update instead of one per

@@ -13,6 +13,8 @@ export { Spinner } from "./Spinner.tsx";
 export { BusyArea } from "./BusyArea.tsx";
 export { LoadGate } from "./LoadGate.tsx";
 export { HelpTip } from "./HelpTip.tsx";
+export { IconHint, Legend } from "./IconHint.tsx";
+export type { IconHintProps, LegendItem, LegendProps } from "./IconHint.tsx";
 export type { SpinnerProps } from "./Spinner.tsx";
 export type { BusyAreaProps } from "./BusyArea.tsx";
 export type { LoadGateProps } from "./LoadGate.tsx";
