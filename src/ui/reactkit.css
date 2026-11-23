@@ -59,6 +59,12 @@
   .rk-navbar li.rk-navbar-secondary { display: none; }
   .rk-navbar li.rk-navbar-more { display: block; }
   .rk-navbar-more summary { flex-direction: column; justify-content: center; gap: 0.1rem; min-height: 56px; padding: 0.25rem; font-size: 0.75rem; }
+  /* 0.18.1: on phones the list is a sheet over the full width, never off-screen. */
+  .rk-navbar-more-list {
+    position: fixed; left: var(--space, 1rem); right: var(--space, 1rem);
+    bottom: calc(56px + env(safe-area-inset-bottom) + 0.5rem);
+    min-width: 0; max-height: 60vh; overflow-y: auto;
+  }
   .rk-layout-main { padding-bottom: calc(56px + var(--space, 1rem) * 2 + env(safe-area-inset-bottom)); }
 }
 

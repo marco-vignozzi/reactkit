@@ -1,6 +1,6 @@
 {
   "name": "reactkit",
-  "version": "0.18.0",
+  "version": "0.18.1",
   "description": "Reusable React + TypeScript kit: API client, session, texts and UI components.",
   "private": true,
   "type": "module",

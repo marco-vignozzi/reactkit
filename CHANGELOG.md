@@ -1,5 +1,9 @@
 # reactkit changelog
 
+## 0.18.1 — 2026-11-23
+- ui: NavBar, phone layout: the "more" list is a sheet over the full width
+  (it used to run off the screen and cut its labels).
+
 ## 0.18.0 — 2026-11-23
 - ui: `IconHint` — an icon with its meaning (`icon`, `label`): the meaning
   shows on hover (native tooltip), is read by assistive technology and is
